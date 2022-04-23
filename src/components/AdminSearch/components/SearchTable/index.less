@@ -1,0 +1,40 @@
+@import '../../../../styles/themes/index.less';
+
+.@{openeagle-antd-prefix}-search-table {
+  &-toolbar {
+    overflow-x: auto;
+    overflow-y: hidden;
+    line-height: 1;
+
+    &-container {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 0;
+    }
+
+    &-container + &-container {
+      padding-top: 0;
+    }
+
+    &-left {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    &-title {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      color: rgba(0, 0, 0, 0.85);
+      font-weight: 500;
+      font-size: 16px;
+    }
+  }
+}

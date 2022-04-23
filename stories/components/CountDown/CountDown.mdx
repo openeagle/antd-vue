@@ -1,0 +1,94 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.colon {
+  display: inline-block;
+  margin: 0 4px;
+  color: #ee0a24;
+}
+.block {
+  display: inline-block;
+  width: 22px;
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+  background-color: #ee0a24;
+}
+
+.play-wrapper{
+  display: flex;
+  margin-top: 20px;
+}
+
+.play-wrapper .play-item{
+  width: 100px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.play-wrapper .play-item span {
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+`}</style>
+
+## CountDown 倒计时
+
+用于实时展示倒计时数值，支持毫秒精度。
+
+<div className="storybook-note">
+  本组件是移动于 Vant 中的 count-down 组件，详细 API 可以查看对应的官网：
+  <br />
+  <a href="https://vant-contrib.gitee.io/vant/v3/#/zh-CN/count-down#shou-dong-kong-zhi">
+    https://vant-contrib.gitee.io/vant/v3/#/zh-CN/count-down#shou-dong-kong-zhi
+  </a>
+</div>
+
+#### 引入
+
+```jsx
+import { CountDown } from '@openeagle/antd-vue';
+```
+
+### 代码演示
+
+#### 默认
+
+基本使用。
+
+<Canvas>
+  <Story id="组件-countdown--basic" />
+</Canvas>
+
+#### 自定义格式
+
+通过 `format` 属性设置倒计时文本的内容。
+
+<Canvas>
+  <Story id="组件-countdown--diy" />
+</Canvas>
+
+#### 毫秒级渲染
+
+倒计时默认每秒渲染一次，设置 `millisecond` 属性可以开启毫秒级渲染。
+
+<Canvas>
+  <Story id="组件-countdown--ms" />
+</Canvas>
+
+#### 自定义样式
+
+通过插槽自定义倒计时的样式，`timeData` 对象格式见下方表格。
+
+<Canvas>
+  <Story id="组件-countdown--diy-style" />
+</Canvas>
+
+#### 手动控制
+
+通过 `ref` 获取到组件实例后，可以调用 `start`、`pause`、`reset` 方法。
+
+<Canvas>
+  <Story id="组件-countdown--manual" />
+</Canvas>

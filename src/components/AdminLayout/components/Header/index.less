@@ -1,0 +1,16 @@
+@import '../../style/variables.less';
+
+@admin-layout-header-prefix-cls: ~'@{admin-layout-prefix}-header';
+
+.@{admin-layout-header-prefix-cls} {
+  &-fixed {
+    position: fixed;
+    top: 0;
+    z-index: 9;
+    width: 100%;
+
+    &-action {
+      transition: width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+    }
+  }
+}

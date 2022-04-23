@@ -1,0 +1,169 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta id="layout" title="页面开发/布局" />
+
+## 布局
+
+布局是一个中后台应用必备的，一个布局 + ProTable + Form 即可获得一个 CRUD 页面。
+
+`antd-vue` 内置了一个 `AdminLayout` 组件来减少样板代码。我们只需要中配置 `props` 属性就可以实现通用的页面布局。
+
+
+```ts
+
+  props: {
+    prefixCls: {
+      type: String,
+      default: 'ant-admin-layout',
+    },
+    logo: [String, Object] as PropType<LayoutContextProps['logo']>,
+    // 设置
+    settings: {
+      type: Object as PropType<Settings>,
+      default: defaultSettings,
+    },
+    // 菜单路由
+    routes: {
+      type: Array as PropType<RouteRecordMenu[]>,
+      required: true,
+    },
+
+    // 控制菜单的收起和展开
+    collapsed: {
+      type: Boolean,
+    },
+    // 默认的菜单的收起和展开
+    defaultCollapsed: {
+      type: Boolean,
+      default: false,
+    },
+    breadcrumbRender: Function as PropType<
+      LayoutContextProps['breadcrumbRender']
+    >,
+    // 自定义头右部的 render 方法
+    rightContentRender: AdminLayoutRenderType,
+    // 自定义页脚
+    footerRender: AdminLayoutRenderType,
+    // 菜单的折叠收起事件
+    onCollapse: Function as PropType<(collapsed: boolean) => void>,
+  },
+```
+
+
+## 菜单展示
+
+我们可以在 route 中进行 menu 相关配置，来决定当前路由是否会被渲染在菜单中。
+
+
+* 当不需要展示在菜单中展示时，可以在路由上配置 `hideInMenu` 或者删除 `menu` 相关的配置；
+
+* 当不需要展示 `children` 时，可以在路由上配置 `hideChildrenInMenu`；
+
+```
+//  routes.ts
+export default [
+  {
+    path: '/overview',
+    component: 'Overview/index',
+    meta: {
+      title: '菜单',
+      hideInMenu: false,
+      hideChildrenInMenu: false,
+    },
+  },
+];
+```
+
+
+## 导航右上角
+
+退出登陆的逻辑也可以通过配置来自定义。
+
+
+```tsx
+
+const rightContentRender = (context: LayoutContextProps) => {
+  return (
+    <div class={classess.layoutBoxRight}>
+      <div
+        class={classess.layoutBoxRightHome}
+        onClick={() => {
+          router.push('/ad/center/home');
+        }}
+      >
+        <BankOutlined class={classess.icon} />
+        亲子通营销首页
+      </div>
+      <AdminLayout.RightContent>
+        <AvatarDropdown />
+      </AdminLayout.RightContent>
+    </div>
+  ) as VNode;
+};
+
+
+<AdminLayout
+  // 省略很多代码
+  rightContentRender={rightContentRender}
+
+>
+ // 省略很多代码
+</AdminLayout>
+```
+
+
+## 自定义 footer
+
+![](./ant-vue05.png)
+
+底部内容也可以通过配置来自定义。
+
+
+```tsx
+<AdminLayout
+  // 省略很多代码
+  footerRender={() => {
+    return <div> 网站底内容</div>
+  }}
+>
+ // 省略很多代码
+</AdminLayout>
+```
+
+
+## 菜单布局展示方式的修改
+
+有时菜单可能需要于顶部显示，左侧显示，或者顶部显示一级菜单，左侧显示二三级菜单。我们可以修改 `settings` 中的 layout 的配置来决定菜单的展示方式。
+
+* `top` 菜单于顶部展示
+* `side` 菜单于左侧展示
+* `mix` 菜单于顶部和左侧混合展示，需要注意，当 `mix` 模式时，需要添加 `splitMenus: true`，顶部才可以正确展示一级菜单
+
+```tsx
+<AdminLayout
+  // 省略很多代码
+  settings = {{
+    layout: 'mix',
+    splitMenus: true,
+  }}
+>
+ // 省略很多代码
+</AdminLayout>
+```
+
+同时，当使用 `mix` 模式后，点击一级菜单，并不会直接定位到第一个子级菜单页面，而是会呈现空白页面，需要于配置中设置一下 `redirect` 的地址
+
+```tsx | pure
+[
+  {
+    "path": "/test/list",
+    "component": "./test/list"
+  },
+  {
+    "path": "/test/list/testAdd",
+    "component": "./test/list/testAdd"
+  },
+  {
+    "redirect": "./test/list"
+  }
+]

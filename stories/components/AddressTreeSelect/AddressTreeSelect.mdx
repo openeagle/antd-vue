@@ -1,0 +1,77 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+## AddressTreeSelect 地址选择器
+
+用于地址选择。
+
+### 引入
+
+```jsx
+import { AddressTreeSelect } from '@openeagle/antd-vue';
+```
+
+### API
+
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| selects (v-model) | 指定选中项                 |      string[]             |        |      |
+| selectNames (v-model) | 指定选中项 label 值    |      string[]             |        |      |
+| title        |  显示的标题         |   string[]      |        | 'area'     |    []
+| data          |  可选项数据源         |  Option[]     |        |    |
+| loading          |  设置载入状态         |  boolean     |        | false   |
+| fieldNames        |  自定义 options 中 label name children 的字段         |   	object     |        |   { value: 'code' }   |
+
+</div>
+
+
+### Option
+
+```
+interface Option {
+  "id": 3000,
+  "key": "tj",
+  "value": "天津"
+}
+```
+
+
+
+### 代码演示
+
+#### 默认
+
+省市区级联，`selects` 为数组，表示选中的 `id` 值， `selectNames` 对应选中的文本值。
+
+<Canvas>
+  <Story id="组件-addresstreeselect--basic" />
+</Canvas>
+
+
+
+#### 标题
+
+我们可以通过 `title` 来设置列表的标题，如下所示：
+
+<Canvas>
+  <Story id="组件-addresstreeselect--title" />
+</Canvas>
+
+
+
+#### 后台请求的数据
+
+如果数据接口获取，我们可以指定 `loading` 来设置加载状态。如果返回字段与默认的字段名不一样，可以通过 `fieldNames` 指定。
+
+<Canvas>
+  <Story id="组件-addresstreeselect--get-data" />
+</Canvas>
+
+
+
+

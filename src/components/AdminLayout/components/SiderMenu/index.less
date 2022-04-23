@@ -1,0 +1,213 @@
+@import '../../style//variables.less';
+
+@admin-layout-sider-prefix-cls: ~'@{admin-layout-prefix}-sider';
+
+.@{admin-layout-sider-prefix-cls} {
+  position: relative;
+  background-color: @layout-sider-background;
+  border-right: 0;
+  transition: background-color 0.3s, min-width 0.3s,
+    max-width 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+  .@{ant-prefix}-menu {
+    background: transparent;
+
+    // 这里关掉了动画，不然使用无法兼容
+    &-item {
+      transition: none;
+    }
+    &-submenu-title {
+      transition: none;
+    }
+
+    // ant-design-vue 菜单折叠时左内边距有问题
+    &.@{ant-prefix}-menu-inline-collapsed {
+      .@{ant-prefix}-menu-item,
+      .@{ant-prefix}-menu-item-group
+        > .@{ant-prefix}-menu-item-group-list
+        > .@{ant-prefix}-menu-item,
+      .@{ant-prefix}-menu-item-group
+        > .@{ant-prefix}-menu-item-group-list
+        > .@{ant-prefix}-menu-submenu
+        > .@{ant-prefix}-menu-submenu-title,
+      .@{ant-prefix}-menu-submenu > .@{ant-prefix}-menu-submenu-title {
+        left: 0 !important;
+        padding: 0 calc(50% - 16px / 2) !important;
+        padding-top: 0px !important;
+        padding-right: calc(50% - 8px) !important;
+        padding-bottom: 0px !important;
+        padding-left: calc(50% - 8px) !important;
+        text-overflow: clip !important;
+      }
+    }
+  }
+
+  // logo
+  &-logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 16px 16px;
+    cursor: pointer;
+    transition: padding 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+
+    > a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 32px;
+    }
+
+    img {
+      display: inline-block;
+      height: 32px;
+      vertical-align: middle;
+    }
+
+    h1 {
+      display: inline-block;
+      height: 32px;
+      margin: 0 0 0 12px;
+      color: white;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 32px;
+      vertical-align: middle;
+      animation: admin-layout-title-hide 0.3s;
+    }
+  }
+
+  &-menu {
+    position: relative;
+    z-index: 10;
+    min-height: 100%;
+    box-shadow: 2px 0 6px rgba(0, 21, 41, 0.35);
+
+    span.@{ant-prefix}-pro-menu-item-title {
+      transition: none;
+    }
+  }
+
+  .@{ant-prefix}-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      -webkit-box-shadow: inset 0 0 5px rgba(37, 37, 37, 0.05);
+    }
+
+    /* 滚动条滑块 */
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      -webkit-box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  &.@{ant-prefix}-layout-sider-collapsed {
+    .@{ant-prefix}-menu-inline-collapsed {
+      width: 48px;
+    }
+    .@{admin-layout-sider-prefix-cls} {
+      &-logo {
+        padding: 16px 8px;
+      }
+    }
+  }
+
+  &-icon {
+    width: 14px;
+    vertical-align: baseline;
+  }
+
+  &-links {
+    width: 100%;
+    ul.@{ant-prefix}-menu-root {
+      height: auto;
+    }
+  }
+
+  &-collapsed-button.@{ant-prefix}-menu-item {
+    padding-left: 16px !important;
+    border-top: @border-width-base @border-style-base rgba(0, 0, 0, 0.25);
+    .anticon {
+      font-size: 16px;
+    }
+  }
+
+  &.@{ant-prefix}-layout-sider.@{admin-layout-sider-prefix-cls}-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    height: 100%;
+    overflow: auto;
+    overflow-x: hidden;
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+  }
+
+  &.@{ant-prefix}-layout-sider-light {
+    .@{ant-prefix}-menu-item a {
+      color: @heading-color;
+    }
+    .@{ant-prefix}-menu-item-selected a,
+    .@{ant-prefix}-menu-item a:hover {
+      color: @primary-color;
+    }
+  }
+
+  &-light {
+    .@{ant-prefix}-layout-sider-children {
+      ::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.06);
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+      }
+
+      /* 滚动条滑块 */
+      ::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.12);
+        border-radius: 3px;
+        -webkit-box-shadow: inset 0 0 5px rgba(0, 21, 41, 0.05);
+      }
+    }
+
+    background-color: @white;
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    .@{admin-layout-sider-prefix-cls}-logo {
+      h1 {
+        color: @primary-color;
+      }
+    }
+    .@{ant-prefix}-menu-light {
+      border-right-color: transparent;
+    }
+
+    .@{admin-layout-sider-prefix-cls}-collapsed-button {
+      border-top: @border-width-base @border-style-base @border-color-split;
+    }
+  }
+}
+
+@keyframes admin-layout-title-hide {
+  0% {
+    display: none;
+    opacity: 0;
+  }
+  80% {
+    display: none;
+    opacity: 0;
+  }
+  100% {
+    display: unset;
+    opacity: 1;
+  }
+}

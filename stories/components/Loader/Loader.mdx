@@ -1,0 +1,126 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+## Loader 请求状态处理
+
+主要针对请求失败做错误处理
+
+
+<Story id="组件-loader--api" />
+
+### API
+
+<div className="mdTable">
+
+| 参数    | 说明               | 类型                                              | 可选值                                     | 默认值          |
+| :------ | ------------------ | ------------------------------------------------- | ------------------------------------------ | --------------- |
+| failure | 支持v-model        | [failure](#failure对象)                           | 必传                                       |                 |
+| loading | 上传列表的内建样式 | Boolean \| {     size: String    tip: String;   } | {  size: 'small' \|'default' \|'large'   } | {size: 'large'} |
+| success | 支持按文件夹上传   | [success](#success对象)                           |                                            | false           |
+
+</div>
+
+
+
+### failure对象
+```
+failure: {
+  error?: Error | EaxiosError;
+  okText?: string;
+  cancelText?: string;
+  onOk?(): any;
+  onCancel?(): any;
+  options?: {
+    [key: string]: {
+      status:
+        | 'success'
+        | 'error'
+        | 'info'
+        | 'warning'
+        | '404'
+        | '403'
+        | '500';
+      title?: string;
+      subTitle?: string;
+      okText?: string;
+      cancelText?: string;
+      onOk?(): any;
+      onCancel?(): any;
+    };
+  };
+}
+
+EaxiosError<T = any> extends Error {
+  config: EaxiosRequestConfig;
+  code?: string;
+  request?: any;
+  response?: EaxiosResponse<T>;
+  isAxiosError: boolean;
+  toJSON: () => object;
+}
+```
+
+
+
+### success对象
+```
+success?: {
+  status: 'success' | 'error';
+  icon: VNode;
+  title: string | VNode;
+  subTitle: string;
+  extra: VNode;
+};
+```
+
+
+## 代码演示
+
+**导入组件**
+
+```jsx
+import { Loader } from '@openeagle/antd-vue';
+```
+
+#### 成功
+
+<Canvas>
+  <Story id="组件-loader--success" />
+</Canvas>
+
+#### 失败
+<Canvas>
+  <Story id="组件-loader--failure" />
+</Canvas>
+
+#### 失败500
+<Canvas>
+  <Story id="组件-loader--failure-wubai" />
+</Canvas>
+
+#### 警告
+<Canvas>
+  <Story id="组件-loader--warning" />
+</Canvas>
+
+#### 取消
+<Canvas>
+  <Story id="组件-loader--cancellation" />
+</Canvas>
+
+
+#### 属性
+
+

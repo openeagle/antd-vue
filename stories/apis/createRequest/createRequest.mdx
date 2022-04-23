@@ -1,0 +1,97 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+# createRequest 请求
+
+基于 axios eaxios 二次 HTTP 库，可以用在浏览器和 node.js 中。
+
+在保持 API 与 axios 基本一致的情况下，简化服务端响应内容和各种异常情况的处理。
+
+## 原特性
+
+- 从浏览器中创建 [XMLHttpRequests](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest)
+- 从 node.js 创建 [http](http://nodejs.org/api/http.html) 请求
+- 支持 [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) API
+- 拦截请求和响应
+- 转换请求数据和响应数据
+- 取消请求
+- 自动转换 JSON 数据
+- 客户端支持防御 [XSRF](http://en.wikipedia.org/wiki/Cross-site_request_forgery)
+
+## 当前新增特性
+
+- 请求错误、请求成功的状态定义、处理
+- 提供较为精确的[错误状态码](#err.code对象)
+
+
+
+## 代码演示
+
+**导入组件**
+
+```jsx
+import { createRequest } from '@openeagle/antd-vue';
+```
+
+<Canvas>
+  <Story id="api-createrequest--basic" />
+</Canvas>
+
+<Canvas>
+  <Story id="api-createrequest--get" />
+</Canvas>
+
+<Canvas>
+  <Story id="api-createrequest--post" />
+</Canvas>
+
+<Canvas>
+  <Story id="api-createrequest--request-error" />
+</Canvas>
+
+
+本文档仅提供常用的属性及api，详见[http://www.axios-js.com/zh-cn/docs/#%E8%AF%B7%E6%B1%82%E9%85%8D%E7%BD%AE](http://www.axios-js.com/zh-cn/docs/#请求配置)
+
+#### 请求配置属性
+
+<div className="mdTable">
+
+| 参数              | 说明                                                         | 类型                                                       | 可选值    | 默认值       |
+| :---------------- | :----------------------------------------------------------- | :--------------------------------------------------------- | :----------- | ------------ |
+| url | 用于请求的服务器 URL                          | string |                                |                                |
+| baseURL | 将自动加在 `url` 前面，除非 `url` 是一个绝对 URL。 | string |                                                             |                                        |
+| method | 创建请求时使用的方法                                         | string                                              | get,delete,head,options,post,put,patch | get |
+|                   |                                                              |                                                          |                                                             |                                        |
+| headers      | 即将被发送的自定义请求头                                     | Object                                                     |  | {'X-Requested-With': 'XMLHttpRequest'} |
+| params     | 即将与请求一起发送的 URL 参数 | plain object \|\| URLSearchParams 对象 | |vNode |
+| data          | 作为请求主体被发送的数据（只适用于这些请求方法 'PUT', 'POST', 和 'PATCH'）  | plain object |                                          | ()=>VNode                                         |
+| timeout       | 指定请求超时的毫秒数(0 表示无超时时间)                            | number                                            |        | 30       |
+| withCredentials | 表示跨域请求时是否需要使用凭证                          | Boolean                                                    |       | `false`      |
+| auth | 表示应该使用 HTTP 基础验证，并提供凭据 | plain object | |  |
+| responseType | 表示服务器响应的数据类型                            | string                                         | 'arraybuffer', 'blob', 'document', 'json', 'text', 'stream' | json     |
+
+</div>
+
+
+
+
+#### err.code对象
+```
+UNKNOWN: // 未知错误
+REQUEST_OFFLINE: // 网络异常
+REQUEST_TIMEOUT: // 超时
+SERVER_ERROR: // 服务器错误
+RESPONSE_INVALID: // 系统出错
+```

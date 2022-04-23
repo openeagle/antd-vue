@@ -1,0 +1,11 @@
+@import '../../style/variables.less';
+
+@admin-layout-grid-content-prefix-cls: ~'@{admin-layout-prefix}-grid-content';
+
+.@{admin-layout-grid-content-prefix-cls} {
+  width: 100%;
+  &.wide {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}

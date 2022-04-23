@@ -1,0 +1,80 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+
+
+`}</style>
+
+# useRequest
+
+用hook形式去做网络请求
+
+## 代码演示
+
+**导入hook**
+
+```jsx
+import { useRequest } from '@openeagle/antd-vue';
+```
+
+<Canvas>
+  <Story id="api-userequest--basic" />
+</Canvas>
+
+
+
+
+
+
+#### 属性
+
+<div className="mdTable">
+
+
+
+| 参数    | 说明             | 类型                  | 必传 |
+| :------ | :--------------- | :-------------------- | :--- |
+| request | 传入一个请求方法 | EaxiosRequest         | 是   |
+| option  | 额外参数         | [option](#option对象) | 否   |
+
+</div>
+
+#### 返回数据
+
+<div className="mdTable">
+
+
+
+| 参数    | 说明         | 类型                          |
+| :------ | :----------- | :---------------------------- |
+| loading | 请求状态     | `Ref<boolean>`                |
+| data    | 请求成功数据 | `Ref<T undefined>`            |
+| error   | 请求失败数据 | `Ref<EaxiosError undefined>`  |
+| run     | 主动触发请求 | function                      |
+| cancel  | 取消请求     | function                      |
+
+</div>
+
+
+#### option对象
+
+<div className="mdTable">
+
+
+
+| 参数     | 说明         | 类型     | 默认  |
+| :------- | :----------- | :------- | :---- |
+| manual   | 是否手动触发 | Boolean  | false |
+| onCancel | 取消请求回调 | function |       |
+
+</div>

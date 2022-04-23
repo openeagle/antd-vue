@@ -1,0 +1,41 @@
+import { Meta, Story } from '@storybook/addon-docs/blocks';
+
+<Meta id="getting-started" title="入门/开始使用" />
+
+`@openeagle/antd-vue` 是基于 Ant Design Vue 封装的一套企业级中后台前端/设计解决方案，致力于在设计规范和基础组件的基础上，继续向上构建，提炼出典型模板/业务组件/配套设计资源，进一步提升企业级中后台产品设计研发过程中的『用户』和『设计者』的体验。随着『设计者』的不断反馈，我们将持续迭代，逐步沉淀和总结出更多设计模式和相应的代码实现，阐述中后台产品模板/组件/业务场景的最佳实践，也十分期待你的参与和共建。
+
+## 前期准备
+
+`@openeagle/antd-vue` 作为一个前端脚手架，默认读者已经懂了一些前端的基础知识，并且了解 Ant Design Vue, 如果你是纯粹的新手，第一次来跑项目建议读一下 新手需知。磨刀不误砍柴工，了解一些基础知识可以让学习曲线更加平滑。
+
+## 安装使用
+
+我们提供了 `antd-vue-admin-template` 和 `antd-vue-template` 来快速的初始化项目模板。其中，`antd-vue-admin-template`是用于后台，`antd-vue-template` 是用 Web 端。
+
+## 区分环境
+
+在很多情况下前端实在后端还没有开发完成之前就开始开发的，这时候我们就需要用到 mock 数据了。Pro 中约定了两种 mock 的定义方式。
+
+* 在根目录的 mock 中接入
+
+一个标准的 mock 由三部分组成.
+
+```
+export default {
+  'GET /api/rule': [{ name: '12' }],
+  'POST /api/rule': (req: Request, res: Response, u: string) => {
+    res.send({
+      success: true,
+    });
+  },
+};
+```
+
+第一部分是 网络请求的 Method 配置，完整的列表可以看[这里](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Methods)。一般我们都会使用 `GET` 和 `POST`。
+
+第二部分是 URL 也就是我们发起网络请求的地址。一般我们会使用统一的前缀方便代理的使用。
+
+第三部分是 数据处理，我们可以配置一个 JSON, JSON 数据会直接返回。或者是配置一个 `function`，`function` 有三个参数 [req](https://expressjs.com/en/4x/api.html#req), [res](https://expressjs.com/en/4x/api.html#res)，url 。具体使用方式与 [express](https://expressjs.com/) 相同。数据必须要通过 `res.send` 来返回。
+
+
+

@@ -1,0 +1,25 @@
+@import '../../../styles/themes/index.less';
+
+.@{openeagle-antd-prefix}-code-wrapper {
+  width: 100%;
+  display: flex;
+  &-input {
+    flex: 1;
+  }
+  &-code {
+    cursor: pointer;
+    display: flex;
+    .code-text {
+      color: #222;
+    }
+    .code-text-send {
+      .openeagle-ant-count-down {
+        color: #999;
+        cursor: text;
+      }
+    }
+  }
+  /deep/ .ant-input-group-addon {
+    background-color: #fff;
+  }
+}

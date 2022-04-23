@@ -1,0 +1,115 @@
+@import '../../../styles/themes/index.less';
+
+.@{openeagle-antd-prefix}-mix-check {
+  position: relative;
+  display: inline-flex;
+  font-size: 0;
+}
+
+.@{openeagle-antd-prefix}-mixcheck-item {
+  height: 32px;
+  line-height: 30px;
+  padding: 0px 15px;
+  color: #333;
+  font-size: 14px;
+  margin: 0;
+  user-select: none;
+  background-color: #fff;
+  border: 1px solid #dcdee2;
+  margin-right: -1px;
+  cursor: pointer;
+  &:first-child {
+    border-left: 1px solid #dcdee2;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+  &:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  &.c-wrapper-checked {
+    color: #1890ff;
+    border-color: #1890ff;
+    background-color: #f0f9ff;
+    z-index: 1;
+    &:first-child {
+      box-shadow: none;
+    }
+    &:after {
+      border-left-color: #1890ff;
+    }
+  }
+  &.c-wrapper-disabled {
+    color: #cccccc;
+    background-color: #f7f7f7;
+    border-color: #dcdee2;
+    cursor: not-allowed;
+    box-shadow: none !important;
+    &:first-child {
+      border-left-color: #dcdee2;
+    }
+    &.c-wrapper-checked {
+      color: #ffffff;
+      background-color: #e6e6e6;
+      &:after {
+        border-left-color: #95b5d6;
+      }
+    }
+  }
+  .c-mix-input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+}
+
+.@{openeagle-antd-prefix}-radio-wrapper {
+  min-width: 94px;
+  text-align: center;
+  position: relative;
+  &:hover {
+    color: #3990ec;
+  }
+  .c-mix-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+  }
+}
+
+.@{openeagle-antd-prefix}-check-wrapper {
+  min-width: 94px;
+  text-align: center;
+  position: relative;
+  &:hover {
+    color: #3990ec;
+  }
+  &:after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: -3px;
+    width: 0;
+    height: 0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 6px solid #dee4f5;
+    transform: rotate(-45deg);
+  }
+
+  .c-mix-input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    opacity: 0;
+    cursor: pointer;
+  }
+}

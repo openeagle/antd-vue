@@ -1,0 +1,221 @@
+import { Meta, Story  } from '@storybook/addon-docs/blocks';
+
+<Meta id="use-tsx-guid" title="基础使用/vue3 Tsx 的使用" />
+
+
+
+## 前提
+
+需要具备 Vue3 、TypeScript 的知识，有一定 React 开发经验，上手会容易很多。
+
+### 定义一个组件
+
+```tsx
+import { PropType, defineComponent } from 'vue';
+
+interface Person {
+  name: string;
+  age:  number;
+  sex: string;
+}
+
+export default defineComponent({
+   name: '组件名',
+   props: {
+     person: {
+       type: Object as PropType<Person>
+     }
+   },
+   setup(props, {emit, slots, attrs}) {
+     return () => {
+       // 这里每次组件重新渲染后，都会重新执行，相当 react 中的 render 函数
+       return <div>这是一个简单的组件</div>
+     }
+   }
+})
+```
+
+上面定义了一个简单的组件，该组件接受一个  `person` 的 pros，该 `person` 的类型是一个对象，包含`name`、`age`、`sex` 属性。
+
+`setup` 函数中返回组件的内容，接受两个参数，第一个 ` props`表示组件的 `props` ，所以如果要访问组件的 `props`，例如要拿到 `person` 的值，可以使用 `props.person` 来访问。
+
+
+
+第二个参数一个对象，通过解构的方式有三个值 `emit` 可以理解 vue2 中的  `this.$emit`,  `slots` 相当于 Vue2 中的 `this.$slots`，`attrs` 相当 Vue2 中的 `$attr`。
+
+
+
+## 事件
+
+回到上面的例子，这里我们在简化一下：
+
+```tsx
+import { PropType, defineComponent } from 'vue';
+
+export default defineComponent({
+   setup(props, {emit, slots, attrs}) {
+     return () => {
+       // 这里很每次组件重新渲染后，都会重新执行，相当 react 中的 render 函数
+       return <div>这是一个简单的组件</div>
+     }
+   }
+})
+```
+
+如果我们想监听`div` 的点击事件，Vue2 中是用 `@click` 语法，在 Tsx 中事件的监听更跟` React` 一样使用 `on` 开头的方式，如果监听 `click` 事件 ，可以这么用：
+
+```tsx
+import { PropType, defineComponent } from 'vue';
+
+export default defineComponent({
+   setup(props, {emit, slots, attrs}) {
+     return () => {
+       // 这里很每次组件重新渲染后，都会重新执行，相当 react 中的 render 函数
+       return <div onClick={() => { alert('点击了') }}>这是一个简单的组件</div>
+     }
+   }
+})
+```
+
+
+
+## 指令
+
+**v-model**
+
+```tsx
+<input v-model={val} />
+```
+
+如果有修饰符的可以这样用：
+
+```tsx
+<input v-model={[val, ["modifier"]]} />
+```
+
+
+
+**v-models**
+
+如果一个组件有多个 `v-model` 可以这么用：
+
+```tsx
+<A v-models={[[foo], [bar, "bar"]]} />
+```
+
+或
+
+```
+<A
+  v-models={[
+    [foo, "foo"],
+    [bar, "bar"],
+  ]}
+/>
+```
+
+
+
+## 插槽
+
+注意: 在 `jsx` 中，应该使用 **`v-slots`** 代替 *`v-slot`*
+
+```tsx
+const A = (props, { slots }) => (
+  <>
+    <h1>{ slots.default ? slots.default() : 'foo' }</h1>
+    <h2>{ slots.bar?.() }</h2>
+  </>
+);
+
+const App = {
+  setup() {
+    const slots = {
+      bar: () => <span>B</span>,
+    };
+    return () => (
+      <A v-slots={slots}>
+        <div>A</div>
+      </A>
+    );
+  },
+};
+
+// or
+
+const App = {
+  setup() {
+    const slots = {
+      default: () => <div>A</div>,
+      bar: () => <span>B</span>,
+    };
+    return () => <A v-slots={slots} />;
+  },
+};
+
+// or
+const App = {
+  setup() {
+    return () => (
+      <>
+        <A>
+          {{
+            default: () => <div>A</div>,
+            bar: () => <span>B</span>,
+          }}
+        </A>
+        <B>{() => "foo"}</B>
+      </>
+    );
+  },
+};
+```
+
+
+
+## 自定义组件怎么使用 v-model
+
+如下我们有一个自定义组件 `MyInput`，当 输入时，我们父组件要实时拿到子组件的值，实现双向绑定的效果，这时就可以用 `v-model`，那在自定义组件中怎么使用 `v-model`，思路跟 vue2 差不多，就是写法有点不一样：
+
+```tsx
+import { ref, PropType, defineComponent } from 'vue';
+import { Input } from 'ant-design-vue';
+
+export default defineComponent({
+   props: {
+     selects: String
+   },
+   emits: ['update:selects']
+   setup(props, {emit}) {
+   	const inputValue = ref(props.selects)
+    
+    const onInput = () => {
+      emit('update:selects', inputValue.value)
+    }
+     return () => {
+       return <Input v-model={[inputValue.value, 'value']} onInput = {onInput} />
+     }
+   }
+})
+```
+
+在父组件中使用：
+
+```tsx
+import MyInput from './MyInput'
+
+export default defineComponent({
+   setup(props, {emit}) {
+   	const inputValue = ref('')
+     return () => {
+       return <MyInput v-model={[inputValue.value, 'selects']}/>
+     }
+   }
+})
+```
+
+
+
+
+
+

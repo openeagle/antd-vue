@@ -1,0 +1,154 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+
+# SearchTable 搜索表单
+
+用于搜索数据的表单。
+
+### 如何使用
+<Story id="组件-adminsearch-searchtable--how-to-use-table" />
+
+通过 `AdminSearch.SearchTable.useTable` 为表格指定搜索表单，数据源。
+
+```js
+const params = AdminSearch.useParams<{
+  groupId: string;
+}>([
+  {
+    name: 'groupId',
+    type: 'string',
+  },
+]);
+
+
+const table = AdminSearch.SearchTable.useTable<TableListItem>({
+  name: 'table', // 标识
+  params, // params 必须是响应式的对象才能监听参数变化
+  form, // AdminSearch.useForm 返回的实例
+  request({ params, form, pagination, sorter }) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        // 数据获取
+        resolve(从后台获取到的数据);
+      }, 1000);
+    });
+  },
+  // 表格的列
+  columns: [
+    {
+      key: 'index',
+      title: '序号',
+      width: 100,
+      type: 'index',
+    },
+   {
+      key: 'name',
+      title: '名称',
+    },
+  ]
+});
+
+```
+
+`table` 的类型是`SearchTableInstance`，对应的内容如下：
+
+```
+{
+    /**
+     * 表格数据列表
+     */
+    data: T[];
+    /**
+     * 是否加载中
+     */
+    loading: boolean;
+    /**
+     * 选中的行
+     */
+    selected?: any[];
+    /**
+     * 排序状态
+     */
+    sorter?: {
+      key: string;
+      order: false | 'ascend' | 'descend';
+    };
+    /**
+     * 当前分页
+     */
+    current: number;
+    /**
+     * 分页大小
+     */
+    pageSize: number;
+    /**
+     * 总记录数
+     */
+    total: number;
+  }
+```
+
+## 代码演示
+
+### 基本用法
+
+简单的表格，最后一列是各种操作。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--base-use-table" />
+</Canvas>
+
+### 序号降序
+
+显示序号设置 `type: 'index'`，如果需要序号倒序，则设置为 `type: 'indexDesc'`
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--desc-sort-table" />
+</Canvas>
+
+### 按字段排序
+
+支持的排序方式，`sortDirections: ['ascend' | 'descend']` 改变每列可用的排序方式，切换排序时按数组内容依次切换
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--sort-by-field-table" />
+</Canvas>
+
+### 可选择
+
+设置 `selection: true` 支持表格可选择， 默认点击 checkbox 触发选择行为。
+可通过 `table.state.selected` 获取选中的次数。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--selected-table" />
+</Canvas>
+
+### 隐藏列
+
+通过指定 `visible` 来显示(`true`)或隐藏(`false`)列。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--hide-field-table" />
+</Canvas>
+
+### 固定列
+
+通过指定 `fixed` 把选择框列固定在左边。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--fixed-field-table" />
+</Canvas>
+
+### 结合 SearchForm 组件
+
+<Canvas>
+  <Story id="组件-adminsearch-searchtable--real-world" />
+</Canvas>
+
+
+
+
+
+### API
+<Story id="组件-adminsearch-searchtable--api" />
+
+详见 Antd Vue 官网：https://next.antdv.com/components/table-cn#API

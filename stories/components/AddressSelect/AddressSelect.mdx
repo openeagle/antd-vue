@@ -1,0 +1,62 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+## AddressSelect 地址选择器
+
+用于地址选择。
+
+### 引入
+
+```jsx
+import { AddressSelect } from '@openeagle/antd-vue';
+```
+
+
+<Story id="组件-addressselect--api" />
+
+### API
+
+该组件输入框使用是 Ant Design Vue 里面的 `Cascader` 组件，相应的文档请看：https://2x.antdv.com/components/cascader-cn#API
+
+下面只介绍自定义和改动过的属性。
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| value (v-model) | 指定选中项                 |      string[]             |        |      |
+| label (v-model) | 指定选中项 label 值               |      string[]             |        |      |
+| accuracy        |  精度，根据精度的不同显示不同级别的选择器         |  string    |   'province' \| 'city' \| 'area'     | 'area'     |
+| dataSource        |  可供定制的省市区接口，         |       |        |    |
+| fieldNames        |  自定义 options 中 label name children 的字段         |   	object     |        |   { value: 'code' }   |
+
+</div>
+
+
+
+### 代码演示
+
+#### 默认
+
+默认选择省市区。通过设置`accuracy`属性，可以选择器的级数。
+
+<Canvas>
+  <Story id="组件-addressselect--basic" />
+</Canvas>
+
+
+
+
+
+
+#### 提供获取数据方法
+
+通过 `dataSource` 属性，可以指定自定义获取数据的接口，再通过 `fieldNames`指定对应的 value 和 label 值。
+
+<Canvas>
+  <Story id="组件-addressselect--get-data" />
+</Canvas>
+
+

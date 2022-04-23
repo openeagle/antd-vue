@@ -1,0 +1,437 @@
+import { Meta, Story  } from '@storybook/addon-docs/blocks';
+
+<Meta id="router-lazy-loading" title="基础使用/路由懒加载" />
+
+
+## 传统方式
+
+这个方法大家应该都用过，就是在路由切换的时候，顶部显示一个加载的进度条，我们这里借助的库是 `NProgress`。
+
+第一步，需要安装插件：
+
+```
+yarn add  nprogress
+```
+
+第二步，`main.ts`中引入插件。
+
+```
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+```
+
+第三步，监听路由跳转，进入页面执行插件动画。
+
+路由跳转中
+
+```
+router.beforeEach((to, from, next) => {
+  // 开启进度条
+  NProgress.start()
+  next()
+})
+```
+
+跳转结束
+
+```
+router.afterEach(() => {
+  // 关闭进度条
+  NProgress.done()
+})
+```
+
+很简单的一个配置，运行后，当我们切换路由时就会看到顶部有一个进度条了：
+
+![](./img8.gif)
+
+这种模式存在几个问题(目前能想到的)：
+
+- 弱网络的情况，页面会卡那里，动的很慢
+- 弱网络的情况，如果我们有做路由的过渡动画，实操中会发现先加载 loading 状态，然后等待一段时间后在出现路由的过渡动画
+- 当网络断开时，进度条件会一直处于加载的状态，并没有及时反馈加载失败
+- 当有比较特殊需求，如，当加载菜单二时，我想用骨架屏的方案来加载，当加载菜单三，我想要用传统的菊花样式加载，这种情况，我们现在的方案是很难做的。
+
+#### 弱网络
+
+我们模拟一下弱网络，打开浏览器控制台，切到 `NetWork`，网络换成** Slow 3G**，然后在切换路由，下面是我实操的效果：
+
+![](./img9.gif)
+
+可以看到，我们切换到菜单二时，进度条件会慢慢走，页面没有及时切换到菜单二的界面，如果页面内容越多，效果越明显。
+
+#### 网络断开
+
+我们再来模拟一下网络断开的情况，切到 `NetWork`，网络换成** Offline**，然后在切换路由，下面是我实操的效果：
+
+![](./img10.gif)
+
+会看到在没有网络的情况下，进度条件还是在那一直转，一直加载，没有及时的反馈，体验也是很差的。
+
+#### 我们想要啥效果
+
+
+
+- 只要点击菜单，页面就要切换，即使在弱网的情况
+- 在加载失败时要给予一个失败的反馈，而不是让用户傻傻的在那里等待
+- 支持每个路由跳转时特有的加载特效
+
+## 寻找解决方案
+
+为了解决上面的问题，我们需要一种能异步加载并且能自定义 `loading` 的方法，查阅了官方文档，Vue2.3 中新增了一个[异步组件](https://cn.vuejs.org/v2/guide/components-dynamic-async.html)，允许我们自定义加载方式，用法如下：
+
+```
+const AsyncComponent = () => ({
+  // 需要加载的组件 (应该是一个 `Promise` 对象)
+  component: import('./MyComponent.vue'),
+  // 异步组件加载时使用的组件
+  loading: LoadingComponent,
+  // 加载失败时使用的组件
+  error: ErrorComponent,
+  // 展示加载时组件的延时时间。默认值是 200 (毫秒)
+  delay: 200,
+  // 如果提供了超时时间且组件加载也超时了，
+  // 则使用加载失败时使用的组件。默认值是：`Infinity`
+  timeout: 3000
+})
+```
+
+> 注意如果你希望在 Vue Router 的路由组件中使用上述语法的话，你必须使用 Vue Router 2.4.0+ 版本。
+
+但我们现在是使用 Vue3 开发的，所以还得看下 Vue3 有没有类似的方法。查阅了[官方文档](https://v3.cn.vuejs.org/api/global-api.html#defineasynccomponent)，也找到了一个方法 `defineAsyncComponent `，用法大概如下：
+
+```
+import { defineAsyncComponent } from 'vue'
+
+const AsyncComp = defineAsyncComponent({
+  // 工厂函数
+  loader: () => import('./Foo.vue'),
+  // 加载异步组件时要使用的组件
+  loadingComponent: LoadingComponent,
+  // 加载失败时要使用的组件
+  errorComponent: ErrorComponent,
+  // 在显示 loadingComponent 之前的延迟 | 默认值：200（单位 ms）
+  delay: 200,
+  // 如果提供了 timeout ，并且加载组件的时间超过了设定值，将显示错误组件
+  // 默认值：Infinity（即永不超时，单位 ms）
+  timeout: 3000,
+  // 定义组件是否可挂起 | 默认值：true
+  suspensible: false,
+  /**
+   *
+   * @param {*} error 错误信息对象
+   * @param {*} retry 一个函数，用于指示当 promise 加载器 reject 时，加载器是否应该重试
+   * @param {*} fail  一个函数，指示加载程序结束退出
+   * @param {*} attempts 允许的最大重试次数
+   */
+  onError(error, retry, fail, attempts) {
+    if (error.message.match(/fetch/) && attempts <= 3) {
+      // 请求发生错误时重试，最多可尝试 3 次
+      retry()
+    } else {
+      // 注意，retry/fail 就像 promise 的 resolve/reject 一样：
+      // 必须调用其中一个才能继续错误处理。
+      fail()
+    }
+  }
+})
+```
+
+但在官方 V3 [迁移指南中](https://v3.cn.vuejs.org/guide/migration/async-components.html#_3-x-%E8%AF%AD%E6%B3%95) 官方有指出下面这段话：
+
+> Vue Router 支持一个类似的机制来异步加载路由组件，也就是俗称的懒加载。尽管类似，这个功能和 Vue 支持的异步组件是不同的。当用 Vue Router 配置路由组件时，你不应该使用 `defineAsyncComponent`。你可以在 Vue Router 文档的**懒加载路**由章节阅读更多相关内容。
+
+官网说不应该使用`defineAsyncComponent`来做路由懒加载，但没说不能使用，而我们现在需要这个方法，所以还是选择用了(后面遇到坑在分享出来)。
+
+## 思路
+
+有了上面的方法，我们现在的思路就是重写 Vue3 中的 `createRouter`方法，在`createRouter` 我们递归遍历传进来的 `routes`， 判断当前的组件是否是异步加载组件，如果是我们用 `defineAsyncComponent`方法给它包装起来。
+
+下面是我现在封装的代码
+
+```
+import { RouteRecordMenu } from '@/components/AdminLayout';
+import PageLoading from '@/components/AdminLayout/components/PageLoading';
+import PageResult from '@/components/AdminLayout/components/PageResult';
+import {
+  AsyncComponentLoader,
+  AsyncComponentOptions,
+  defineAsyncComponent,
+  h,
+} from 'vue';
+import { createRouter as vueCreateRouter, RouterOptions } from 'vue-router';
+
+/**
+ *
+ * @param routerOptions vue createRouter 的参数
+ * @param asyncComponentOptions 异步组件配置参数
+ * @returns
+ */
+
+export default function createRouter(
+  routerOptions: RouterOptions,
+  {
+    loadingComponent = PageLoading,
+    errorComponent = PageResult,
+    delay = 200,
+    timeout = 3000,
+    suspensible = false,
+    onError,
+  }: Omit<AsyncComponentOptions, 'loader'> = {},
+) {
+  const treedRoutes = (childrenRoutes: RouteRecordMenu[]) => {
+    return childrenRoutes.map((childrenRoute: RouteRecordMenu) => {
+      if (childrenRoute.children) {
+        childrenRoute.children = treedRoutes(childrenRoute.children);
+      } else {
+        if (typeof childrenRoute.component === 'function') {
+          childrenRoute.component = defineAsyncComponent({
+            loader: childrenRoute.component as AsyncComponentLoader,
+            loadingComponent,
+            errorComponent,
+            delay,
+            timeout,
+            suspensible,
+            onError,
+          });
+        }
+      }
+      return childrenRoute;
+    });
+  };
+  treedRoutes(routerOptions.routes);
+  return vueCreateRouter(routerOptions);
+}
+
+```
+
+上面重写了 `createRouter` 方法，并提供了可选的配置参数 `routerOptions`，`routerOptions`里面的字段其实就是`defineAsyncComponent`里面了的参数，除了 `loder`。
+
+有了现在的 `createRouter`，我们来看相同场景，不同效果。
+
+#### 弱网络
+
+![](./img11.gif)
+
+可以看到第二种方案在弱方案的情况下，只要我们切换路由，页面也会马上进行切换，过渡方式也是采用我们指定的。不像第一种方案一样，页面会停在点击之前的页面，然后在一下的刷过去。
+
+当切换到菜单时，因为这里我指定的时间 `timeout` 为 `3` 秒，所以在`3`秒内如果没有加载出来，就会显示我们指定的 `errorComponent `。
+
+现在，打开浏览器，切到 `NetWork`，网络换成** Offline**，也就是断网的情况，我们在来看下效果。
+
+#### 网络断开
+
+![](./img12.gif)
+
+可以看到，当我们网络断开的时候，在切换页面时，会显示我们指定 `errorComponent `，不像第一种方式一样会一直卡在页面上加载。
+
+#### 变换 Loading
+
+下面来看看，我事例路由：
+
+**router.ts**
+
+```
+import { RouteRecordRaw, RouterView, createWebHistory } from 'vue-router'
+import { RouteRecordMenu } from '@openeagle/antd-vue/es/components/AdminLayout'
+import { AdminLayout, Login } from '@openeagle/antd-vue-admin'
+import createRouter from './createRoute'
+
+export const routes: RouteRecordMenu[] = [
+  {
+    path: '/menu',
+    name: 'Menu',
+    component: RouterView,
+    redirect: '/menu/list',
+    meta: {
+      icon: 'fas fa-ad',
+      title: '菜单一',
+    },
+    children: [
+      {
+        path: '/menu/list',
+        component: () => import('@/pages/Menu1'),
+        meta: {
+          title: '列表',
+        },
+      },
+    ],
+  },
+  {
+    path: '/menu2',
+    name: 'Menu2',
+    component: RouterView,
+    redirect: '/menu2/list',
+    meta: {
+      icon: 'fas fa-ad',
+      title: '菜单二',
+    },
+    children: [
+      {
+        path: '/menu2/list',
+        component: () => import('@/pages/Menu2'),
+        meta: {
+          title: '列表',
+        },
+      },
+    ],
+  },
+  {
+    path: '/menu3',
+    name: 'Menu3',
+    component: RouterView,
+    redirect: '/menu3/list',
+    meta: {
+      icon: 'fas fa-ad',
+      title: '菜单三',
+    },
+    children: [
+      {
+        path: '/menu3/list',
+        component: () => import('@/pages/Menu3'),
+        meta: {
+          title: '列表',
+        },
+      },
+    ],
+  },
+]
+
+const router = createRouter({
+  history: createWebHistory('/'),
+  routes: [
+    {
+      path: '/login',
+      component: Login,
+      props: {
+        title: '商化前端后台登录',
+      },
+    },
+    {
+      path: '/',
+      redirect: '/menu',
+      component: AdminLayout,
+      props: {
+        title: '商化前端 后台 模板',
+        routes,
+      },
+      meta: {
+        title: '首页',
+      },
+      children: routes as RouteRecordRaw[],
+    },
+  ],
+})
+
+export default router
+
+```
+
+我们现在想用下面已经封装好的冒泡加载方式来代替菊花的样式：
+
+![](./img13.gif)
+
+很简单，我们只需要把对应加载组件(**BubbleLoading**)的名称，传给 `createRouter` 既可，为了演示效果，我们把网络切花到 **Slow 3G**，代码如下：
+
+**router.ts**
+
+```
+/***这里省略很多字**/
+const router = createRouter(
+  {
+    history: createWebHistory('/'),
+    routes: [
+      /***这里省略很多字**/
+    ]
+  },
+  {
+    loadingComponent: BubbleLoading, // 看这里看这里
+  }
+)
+
+export default router
+```
+
+![](./img14.gif)
+
+### 花里胡哨
+
+如果我们只要点击菜单二才用 **BubbleLoading** ，点击其它的就用菊花的加载，那又要怎么做呢？
+
+这里，大家如果认真看上面二次封装的 `createRouter` 方法，可能就知道怎么做了，其中里面有一个判断就是
+
+```
+typeof childrenRoute.component === 'function'
+```
+
+其实我做的就是判断如果外面传进来的路由采用的异步加载的方式，我才对用 `defineAsyncComponent` 重写，其它的加载方式我是不管的，所以，我们想要自定义各自的加载方式，只要用 `defineAsyncComponent` 重写即可。
+
+回到我们的 **router.ts** 代码，
+
+```
+// 这里省略一些代码
+export const routes: RouteRecordMenu[] = [
+   // 这里省略一些代码
+  {
+    path: '/menu2',
+    name: 'Menu2',
+    component: RouterView,
+    redirect: '/menu2/list',
+    meta: {
+      icon: 'fas fa-ad',
+      title: '菜单二',
+    },
+    children: [
+      {
+        path: '/menu2/list',
+        component: defineAsyncComponent({  // 看这里
+          loader: () => import('@/pages/Menu2'),// 看这里
+          loadingComponent: BubbleLoading,// 看这里
+        }),
+        meta: {
+          title: '列表',
+        },
+      },
+    ],
+  },
+ // 这里省略一些代码
+]
+ // 这里省略一些代码
+```
+
+在上面，我们用`defineAsyncComponent`定义菜单二的 `component `加载方式，运行效果如下：
+
+![](./img16.gif)
+
+从图片可以看出点击菜单一和三时，我们使用菊花的加载方式，点击菜单二就会显示我们自定义的加载方式。
+
+##### 注意
+
+这里有一个显性的 bug，就是下面代码：
+
+```
+ component: defineAsyncComponent({
+    loader: () => import('@/pages/Menu2'),
+    loadingComponent: BubbleLoading,
+ }),
+```
+
+不能用函数的方式来写，如下所示：
+
+```
+ component: () => defineAsyncComponent({
+    loader: () => import('@/pages/Menu2'),
+    loadingComponent: BubbleLoading,
+ }),
+```
+
+这里因为我在 createRouter 方法中使用 `typeof childrenRoute.component === 'function'`来判断，所以上面代码又会被`defineAsyncComponent`包起来，变成两层的`defineAsyncComponent`，所以页面加载会出错。
+
+我也想解决这个问题，但查了很多资料，没有找到如何在方法中，判断方法采用的是 defineAsyncComponent 方式，即下面这种形式：
+
+```
+ component: () => defineAsyncComponent({
+    loader: () => import('@/pages/Menu2'),
+    loadingComponent: BubbleLoading,
+ }),
+```

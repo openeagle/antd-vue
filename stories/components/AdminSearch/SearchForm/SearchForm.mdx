@@ -1,0 +1,163 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+
+# SearchForm 搜索表单
+
+用于搜索数据的表单。
+
+## 代码演示
+
+
+### 如何使用
+<Story id="组件-adminsearch-searchform--how-to-use-form" />
+
+指定表单的数据源为一个数组。
+
+```
+const form = AdminSearch.useForm([
+  {
+    type: 'text',
+    name: 'text',
+    label: '标题'
+  },
+  {
+    type: 'number',
+    name: 'number',
+    label: '标题',
+  }
+]);
+```
+
+`form` 的类型是`SearchFormInstance`，对应的内容见 API
+
+
+
+### 初始化值
+
+基本的表单数据域控制展示，包含初始化、验证、提交。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--initial-value" />
+</Canvas>
+
+### 布局
+
+布局方式可通过属性 layout 来设置，有两种模式 `inline | grid`，展示效果如下所示。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--layout" />
+</Canvas>
+
+### 固定 Label 宽度
+
+过 `labelWidth` 设置固定宽度。注意：需要在 `layout` 非 `inline` 模式下生效。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--fixed-label-width" />
+</Canvas>
+
+
+### actionSplit
+
+表单动作按钮是否分离显示，分离时表单的提交和重置等动作按钮不会与表单字段一行，否则为同一行
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--action-split" />
+</Canvas>
+
+### 表单按钮相关的配置
+
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--form-btn-config" />
+</Canvas>
+
+
+
+
+### 定制组件
+
+在使用 `useForm` 生成 `SearchFormInstance` 实例时，其中 `type` 除了基本类型的表单外，我们还可以指定自定义组件。
+
+<Canvas>
+  <Story id="组件-adminsearch-searchform--custom-control" />
+</Canvas>
+
+
+
+<Story id="组件-adminsearch-searchform--api" />
+
+### API
+
+
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| form | SearchForm.useForm() 返回的  form参数 | *SearchFormInstance* (见下面) |        |      |
+| layout  |  布局方式      | String | inline\| grid | inline |
+| column | 搜索字段列宽配置，只有在 grid 布局模式有效 |  string \| number \| colProps  |  | 8            |
+| labelAlign | label 标签的文本对齐方式 | string | left \| right | right        |
+| labelWidth | label 标签的宽度 | number |  | auto         |
+| colon | 是否显示冒号 | boolean |  | true         |
+| actionSplit | 表单动作按钮是否分离显示，分离时表单的提交和重置等动作按钮不会与表单字段一行，否则为同一行 | boolean |  | false        |
+| actionAlign | 表单动作按钮的对齐方式，表单动作氛分 main 和 extra。main 在左边，放置提交和重置等与表单相关的按钮，extra 放置额外的动作按钮，例如：表格的新建等。 | string | start\| end\| center\| space-between | pace-between |
+| searchText | 搜索按钮文案，false 表示不显示 | string \| boolean |  | 搜索         |
+| resetText | 重置按钮文案 false 表示不显示 | string \| boolean |  | 重置         |
+| mainActions | 表单的主要操作按钮 | *SearchFormAction*[] |  |              |
+| extraActions | 表单的额外操作按钮 | *SearchFormAction*[] |  |              |
+| hideRequiredMark | 隐藏所有表单项的必选标记 | boolean |  | false        |
+| hasFeedback | 展示校验状态图标 | boolean |  | false        |
+| validateFirst | 当某一规则校验不通过时，是否停止剩下的规则的校验。 | boolean |  | true         |
+| validateTrigger | 设置字段校验的时机 | string\|string[] |  | 'change'     |
+
+</div>
+
+#### *SearchFormInstance*
+
+```
+export interface SearchFormInstance<T = any> {
+  readonly ref: Ref<any>;
+  readonly name: string;
+  readonly fields: SearchField[];
+  readonly state: T;
+  readonly searchState?: T;
+  readonly rules: {
+    [key: string]: ValidationRule[];
+  };
+  readonly initiate: () => void;
+  readonly submit: () => void;
+  readonly reset: () => void;
+  readonly validate: (
+    nameList?: string[],
+    options?: ValidateOptions,
+  ) => Promise<{
+    values: Partial<T>;
+    errorFields: {
+      name: string;
+      errors: Error[];
+    }[];
+  }>;
+  readonly onInitiate: (callback: (form: SearchFormInstance) => void) => void;
+  readonly onSubmit: (callback: (form: SearchFormInstance) => void) => void;
+  readonly onReset: (callback: (form: SearchFormInstance) => void) => void;
+}
+```
+
+
+
+### *SearchFormAction*
+
+```
+
+export interface SearchFormAction {
+  type?: 'default' | 'primary' | 'link';
+  icon?: VNode;
+  text: string;
+  onClick(search: SearchFormInstance): void;
+}
+```
+

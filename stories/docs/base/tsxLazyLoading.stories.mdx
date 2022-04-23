@@ -1,0 +1,32 @@
+import { Meta, Story  } from '@storybook/addon-docs/blocks';
+
+<Meta id="tsx-lazy-loading" title="基础使用/tsx 懒加载的支持" />
+
+## Tsx 热重载配置
+
+#### 安装插件
+
+使用插件` @ant-design-vue/vue-jsx-hot-loader` 支持 vue3 tsx 文件的热重载。
+
+插件地址：https://github.com/vueComponent/vue-jsx-hot-loader
+
+```js
+yarn add @ant-design-vue/vue-jsx-hot-loader -D
+```
+
+
+
+#### 配置
+
+在 `vue.config.js` 文件 `chainWebpack` 中的配置，如下所示：
+
+````ts
+  chainWebpack(config) {
+    config.module
+      .rule('tsx')
+      .test(/\.tsx$/)
+      .use(['babel-loader', '@ant-design-vue/vue-jsx-hot-loader'])
+      .before('babel-loader')
+      .loader('@ant-design-vue/vue-jsx-hot-loader');
+  }
+````

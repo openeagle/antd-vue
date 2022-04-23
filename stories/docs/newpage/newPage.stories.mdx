@@ -1,0 +1,121 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta id="new-page" title="页面开发/新增页面" />
+
+## 新增页面
+
+这里的『页面』指配置了路由，能够通过链接直接访问的模块，要新建一个页面，通常可以在脚手架的基础上进行简单的配置。
+
+## 手动创建
+
+### 新增 ts、less 文件
+
+在 `src/pages` 下创建新的 `tsx`，`module.less` 文件。 如果有多个相关页面，你的可以创建一个新文件夹来放置相关文件。
+
+```js
+config
+src
+  models
+  pages
++   NewPage.tsx
++   NewPage.module.less
+  ...
+...
+package.json
+```
+
+为了更好的演示，我们初始化 `NewPage.tsx` 的内容如下：
+
+```tsx
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  setup() {
+    return () => {
+      return <div>New Page</div>;
+    };
+  },
+});
+```
+
+暂时不向本文档中的样式文件添加内容，您也可以尝试自己添加内容。
+
+样式文件默认使用 [CSS Modules](http://www.ruanyifeng.com/blog/2016/06/css_modules.html)，如果需要，可以导入 [antd less](https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less) 变量 在文件的头部：
+
+```
+@import '~antd/lib/style/themes/default.less';
+```
+
+这样可以轻松获取 antd 样式变量并在文件中使用它们，这可以保持保持页面的一致性，并有助于实现自定义主题。
+
+### 将文件加入菜单和路由
+
+默认布局中的菜单根据 `routes.ts` 中的路由生成的，所以我们可以配置路由，菜单也会产生。
+
+我们需要在 routes.ts 中使用 component 配置我们页面到路由中。
+
+```ts
+export default [
+  {
+    path: '/user',
+    component: '../layouts/UserLayout',
+    routes: [
+      {
+        // path 支持为一个 url，必须要以 http 开头
+        path: 'https://pro.ant.design/docs/getting-started-cn',
+        meta: {
+          target: '_blank', // 点击新窗口打开
+        }
+      },
+    ],
+  },
+];
+```
+
+路由配置完成后，访问页面即可看到效果，如果需要在菜单中显示，需要配置 `name`，`icon`，`hideChildrenInMenu` 等来辅助生成菜单。
+
+具体值如下：
+
+* `name:string`  网站标题
+* `menu?: string`  菜单项文本，为空时取 title 值
+* `icon:string`  配置菜单的图表，默认使用 antd 的 icon 名，默认不适用二级菜单的 icon
+* `target: string` 新窗口打开, 可取值 `'_self' | '_blank' | '_parent' | '_top'`
+* `authority:string` 权限配置，需要预先配置权限
+* `hideChildrenInMenu:boolean` 用于隐藏不需要在菜单中展示的子路由
+* `hideInMenu:boolean` 可以在菜单中不展示这个路由，包括子路由
+* `hideInBreadcrumb:boolean` 隐藏面包屑
+
+
+### 在菜单中使用 iconFont
+
+对于使用 `iconfont.cn` 的用户，我们可以通过设置 `createFromIconfontCN` 方法参数对象中的 `scriptUrl` 字段，封装一个``Icon组件，导入到对应的组件中使用即可。
+
+```tsx
+import { defineComponent } from 'vue';
+import { createFromIconfontCN } from '@ant-design/icons-vue';
+import classes from './index.module.less';
+
+const Icon = createFromIconfontCN({
+  scriptUrl: '//at.alicdn.com/t/font_2415428_2vff2bi0pmh.js',
+});
+
+export default defineComponent({
+  name: 'WidgetIcon',
+  props: {
+    type: {
+      type: String,
+      required: true,
+    },
+  },
+  setup(props, { attrs }) {
+    return () => (
+      <Icon class={[classes.icon, attrs.class]} type={`icon-${props.type}`} />
+    );
+  },
+});
+
+```
+
+iconfontUrl 的连接需要在 [iconfont](https://www.iconfont.cn/) 官网中获取
+
+![](./ant-vue04.png)

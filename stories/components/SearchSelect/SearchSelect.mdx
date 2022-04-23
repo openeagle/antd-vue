@@ -1,0 +1,111 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+## SearchSelect 远程搜索
+
+通过搜索实时从后台获取数据，并下拉选择。
+
+### 何时使用
+
+数据量大的情况下，不想一次全部获取，可以使用该组件。
+
+### 代码演示
+
+**导入组件**
+
+```jsx
+import { SearchSelect } from '@openeagle/antd-vue';
+
+```
+
+<Story id="组件-numbertext--api" />
+
+### API
+
+> 本组件是对 antd vue 中的 Select 选择器的二次封装，所以支持 Select 所提供的所有属性，可以参见官网：https://2x.antdv.com/components/select-cn#API
+> 下面只对自定义的一些属性进行说明。
+
+
+#### 属性
+
+
+
+
+<div className="mdTable">
+
+>
+
+| 参数           | 说明                     | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| value(v-model) | 	指定当前选中的条目       | string|string[]|number|number[]  |        |     |
+| allowEmptySearch | 是否允许空值查询       | Boolean             |        |     |
+| mode      | 设置 Select 的模式为多选或标签     | String            |  	'multiple' | 'tags' | 'combobox'      |     |
+| dataSource     | 必填，远程数据源            | Function as PropType<(keyword: string) => Promise<any[]>>  |        |      |
+| extras          | 额外的数据，就是都会在列表显示的数据，具体用法看上面 `extras` Demo   | Array as PropType<any[]>             |        |     |
+| fieldNames |    选项字段映射，具体用法看上面 `preset` Demo      |  Array as PropType<any[]>  |        |   `{ label: 'label', value: 'value' }`  |
+
+</div>
+
+
+
+
+#### 事件
+
+可以参见官网：https://2x.antdv.com/components/select-cn#API
+
+
+
+
+
+#### 搜索框
+
+搜索和远程数据结合。
+
+
+<Canvas>
+  <Story id="组件-searchselect--basic" />
+</Canvas>
+
+#### 多选
+
+通过 `mode` 属性可以设置多选。
+
+
+<Canvas>
+  <Story id="组件-searchselect--multiple" />
+</Canvas>
+
+#### 自动分词
+
+试下复制 `-abc,-bcd` 到输入框里。只在 tags 和 multiple 模式下可用。
+
+<Canvas>
+  <Story id="组件-searchselect--separators" />
+</Canvas>
+
+#### 预设值
+<Canvas>
+  <Story id="组件-searchselect--preset" />
+</Canvas>
+
+#### extras
+
+当数据需要额外的数据，但接口没有提供时，比如列表中需要有一个`全部`的选项，可以使用 `extras` 属性来添加，用法如下
+
+
+<Canvas>
+  <Story id="组件-searchselect--extras" />
+</Canvas>
+

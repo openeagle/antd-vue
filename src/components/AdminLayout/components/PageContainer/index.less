@@ -1,0 +1,39 @@
+@import '../../style/variables.less';
+
+@admin-layout-page-container-prefix-cls: ~'@{admin-layout-prefix}-page-container';
+
+.@{admin-layout-page-container-prefix-cls} {
+  &-warp {
+    background-color: @component-background;
+  }
+
+  &-children-content {
+    margin: 24px 24px 0;
+  }
+
+  &-ghost {
+    .@{admin-layout-page-container-prefix-cls}-warp {
+      background-color: transparent;
+
+      & + .@{admin-layout-page-container-prefix-cls}-children-content {
+        margin-top: 0;
+      }
+    }
+  }
+
+  .@{admin-layout-prefix}-grid-content.wide {
+    .@{admin-layout-page-container-prefix-cls}-children-content {
+      margin: 0 auto;
+    }
+  }
+
+  &-children-content {
+    .@{ant-prefix}-card {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

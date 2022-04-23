@@ -1,0 +1,150 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+
+## ImageUploader 图片上传
+
+
+支持多图上传、多图预览、拖拽文件上传、拖拽文件夹上传、限制图片分辨率
+
+## 代码演示
+
+**导入组件**
+
+```jsx
+import { ImageUploader } from '@openeagle/antd-vue';
+```
+
+<Story id="组件-imageuploader--api" />
+
+### API
+
+
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数         | 说明                    | 类型                               | 可选值               | 默认值                      |
+| :----------- | ----------------------- | ---------------------------------- | -------------------- | --------------------------- |
+| value        | 支持v-model             | Array                              |                      |                             |
+| accept       | 支持的图片格式          | String                             | .jpg,.jpeg,.png,.gif | .jpg,.jpeg,.png,.gif        |
+| errorReserve | 是否保留上传失败的图片  | Boolean                            |                      | true                        |
+| directory    | 支持按文件夹上传        | Boolean                            |                      | false                       |
+| limit        | 限制上传数量            | Number                             |                      | 1                           |
+| multiple     | 支持同时上传多张图片    | Boolean                            |                      | false                       |
+| maxSize      | 最大图片大小(单位:px)   | Number                             |                      |                             |
+| minSize      | 最小图片大小(单位:px)   | Number                             |                      |                             |
+| maxWidth     | 最大图片宽度(单位:px)   | Number                             |                      |                             |
+| minWidth     | 最小图片宽度(单位:px)   | Number                             |                      |                             |
+| maxHeight    | 最大图片高度(单位:px)   | Number                             |                      |                             |
+| minHeight    | 最小图片高度(单位:px)   | Number                             |                      |                             |
+| resolution   | 限制图片分辨率(单位:px) | { width: Number, height: Number }  |                      |                             |
+| resolutions  | 多组图片分辨率(单位:px) | [{ width: Number, height: Number}] |                      |                             |
+| view         | 预览图大小(单位:px)     | { width: Number, height: Number}   |                      | { width: 104, height: 104 } |
+| text         | 上传按钮文案            | String                             |                      | 上传图片                    |
+| closable     | 是否支持删除            | Boolean                            |                      | true                        |
+| validate     | 自定义校验              | Function(file)=>{}                 |                      |                             |
+| disabled     | 是否禁用(无法上传)      | Boolean                            |                      | false                       |
+| renderItem | 自定义渲染样式 | Function(ImageView: VNode, file: [ImageFile](#imagefile对象), index: number) |
+</div>
+
+
+#### 事件
+
+
+<div className="mdTable">
+
+| 事件名称           | 说明              | 回调参数 |
+| -------------- | ---------------------------------------- | ----------------- |
+| onChange | 上传进度条改变回调 | Function(files: [ImageFile](#imagefile对象)[], file: [ImageFile](#imagefile对象)) |
+| onRemove | 删除图片回调 | Function(files: [ImageFile](#imagefile对象)[], file: [ImageFile](#imagefile对象), index: number) |
+| onPreview | 预览图片回调 | Function(files: [ImageFile](#imagefile对象)[], file: [ImageFile](#imagefile对象), index: number) |
+
+
+</div>
+
+
+
+
+
+#### ImageFile对象
+```
+ImageFile {
+  uid: string;
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  status: 'uploading' | 'done' | 'error' | 'removed';
+  thumbUrl: string;
+  url: string;
+  width: number;
+  height: number;
+  duration: number;
+  bitrate: number;
+}
+```
+
+#### 同时多张上传
+
+使用 `multiple` 属性，可以支持同时上传多张图片。
+
+<Canvas>
+  <Story id="组件-imageuploader--multiple"/>
+</Canvas>
+
+ 
+
+
+#### 限制上传数量
+
+使用 `limit` 属性可以控制图片上传的数量，当上传照片数到达限制后，上传按钮消失。
+
+<Canvas>
+  <Story id="组件-imageuploader--limit-count"/>
+</Canvas>
+
+
+#### 限制分辨率
+
+使用 `resolutions` 属性来限制图片上传的分辨率，该属性是一个对象数组，每个对象表示单个上传图片的分辨率，每个对象包含 `width` 和 `height` 分别表示图片的宽和高。事例如下：
+
+
+<Canvas>
+  <Story id="组件-imageuploader--specs-limit"/>
+</Canvas>
+
+
+
+#### 预览图片大小
+
+使用  `view` 属性来设置预览图片的大小，该属性是一个对象数组，每个对象表示单个上传图片的分辨率，每个对象包含 `width` 和 `height` 分别表示图片的宽和高。事例如下：
+
+<Canvas>
+  <Story id="组件-imageuploader--view-size" />
+</Canvas>
+
+
+
+#### 自定义渲染
+
+如果需要添加自定义渲染内容，可以使用  `renderItem` 属性来渲染，事例如下：
+<Canvas>
+  <Story id="组件-imageuploader--custom-render" />
+</Canvas>
+
+

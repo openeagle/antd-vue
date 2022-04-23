@@ -1,0 +1,88 @@
+import { Story, Canvas, ArgsTable  } from '@storybook/addon-docs/blocks';
+import {Basic} from './AddressDetail.stories.tsx'
+
+## AddressDetail 地址选择器
+
+用于地址选择，并提供可填写的详细地址。
+
+<div className="storybook-note">
+ 注意：AddressDetail 是基于 AddressSelect 二次封装的，所以支持 AddressSelect 所有属性。
+</div>
+
+
+
+### 引入
+
+```jsx
+import { AddressDetail } from '@openeagle/antd-vue';
+```
+
+<Story id="组件-addressdetail--api" />
+
+### API
+
+
+
+该组件输入框使用是 Ant Design Vue 里面的 `Cascader` 组件，相应的文档请看：https://2x.antdv.com/components/cascader-cn#API
+
+下面只介绍自定义和改动过的属性。
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| value (v-model) | 指定选中项                 |      object          |        |   { addressCode: string[]; addressLabel: string[]; area: string;}   |
+| label (v-model) | 指定选中项 label 值               |      string[]             |        |      |
+| dataSource        |  可供定制的省市区接口，         |       |        |    |
+| maxlength        |  详细地址的最大长度         |       |   number     |    |
+| fieldNames        |  自定义 options 中 label name children 的字段         |   	object     |        |   { value: 'code' }   |
+
+
+</div>
+
+
+### 代码演示
+
+
+#### 默认
+
+省市区级联，及详细地址信息。选中后返回一个对象，结构为:
+
+```ts
+export interface AddressDetailType {
+  addressCode: string[]; // 选中省市区对应的 code
+  addressLabel: string[]; // 选中省市区对应的文本
+  area: string; // 详细地址
+}
+```
+事例如下：
+
+<Canvas>
+  <Story id="组件-addressdetail--basic" />
+</Canvas>
+
+
+#### 提供获取数据方法
+
+获取的数据源是全国的数据，可以通过 https://github.com/qq449245884/antdCascaderDateMethod 获取最新数据。
+
+如果需要自定义数据源我们可以通过 `dataSource` prop，该属性接收一个 promise 的结果，如果返回字段与默认的字段名不一样，可以通过 `fieldNames` 指定。
+
+事例如下：
+
+<Canvas>
+  <Story id="组件-addressdetail--get-data" />
+</Canvas>
+
+#### 绑定数据
+
+<Canvas>
+  <Story id="组件-addressdetail--bind-data" />
+</Canvas>
+
+
+
+

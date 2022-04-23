@@ -1,0 +1,40 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+## Catpcha 获取验证码
+
+用于获取验证码。
+
+### 引入
+
+```jsx
+import { Catpcha } from '@openeagle/antd-vue';
+```
+
+### 代码演示
+
+基本使用。
+
+<Canvas>
+  <Story id="组件-catpcha--basic" />
+</Canvas>
+
+
+
+### API
+
+该组件输入框使用是 Ant Design Vue 里面的 `Input` 组件，相应的文档请看：https://2x.antdv.com/components/input-cn
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| value (v-model) | 输入的值                 |      sring             |        |      |
+| request        |  请求验证码的函数          |  Function()    |        |      |
+| timeout        |  倒计时时长，单位毫秒,可以看 `CountDown` 组件 文件         |  number     |        |   6000   |
+
+
+</div>
+

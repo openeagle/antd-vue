@@ -1,0 +1,56 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+
+## MixCheck 混选框
+
+单选和多选组合。
+
+### 何时使用
+
+在一组可选项中进行多项选择时或者只单选一种。
+
+
+<Story id="组件-mixcheck--api" />
+
+### API
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| selects(v-model) | 当前选中的值     | array             |        | []     |
+| options        | options 数据                             | array<{id, name}> |        | []     |
+
+
+</div>
+
+
+#### 事件
+
+
+<div className="mdTable">
+
+| 事件名称           | 说明              | 回调参数 | 版本 |
+| -------------- | ---------------------------------------- | ----------------- | ------ |
+| change | 	变化时回调函数      | 	Function(checkedValue)             |        |
+
+</div>
+
+
+
+
+### 代码演示
+
+**导入组件**
+
+```jsx
+import { MixCheck } from '@openeagle/antd-vue';
+```
+
+<Canvas>
+  <Story id="组件-mixcheck--basic" />
+</Canvas>
+

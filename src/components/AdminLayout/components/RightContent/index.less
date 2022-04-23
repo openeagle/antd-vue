@@ -1,0 +1,49 @@
+@import '../../style/variables.less';
+
+@admin-layout-right-content-prefix-cls: ~'@{admin-layout-prefix}-right-content';
+
+@admin-layout-right-content-hover-bg: rgba(0, 0, 0, 0.025);
+
+.@{admin-layout-right-content-prefix-cls} {
+  display: flex;
+  float: right;
+  height: 48px;
+  margin-left: auto;
+  overflow: hidden;
+
+  .action {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 12px;
+    transition: all 0.3s;
+
+    > span {
+      vertical-align: middle;
+    }
+
+    &:hover {
+      background: @admin-layout-right-content-hover-bg;
+    }
+
+    &.opened {
+      background: @admin-layout-right-content-hover-bg;
+    }
+  }
+
+  &_dark {
+    .action {
+      color: rgba(255, 255, 255, 0.85);
+
+      > span {
+        color: rgba(255, 255, 255, 0.85);
+      }
+
+      &:hover,
+      &.opened {
+        background: @primary-color;
+      }
+    }
+  }
+}

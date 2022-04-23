@@ -1,0 +1,85 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+
+
+### API
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明 | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| selects(v-model) |   指定当前选中的条目    | array             |        |      |
+| weekTimeData        |  界面展示的数据，用法请看 Demo                       | WeekData[] |        | []     |
+
+
+</div>
+
+#### 事件
+
+
+<div className="mdTable">
+
+| 事件名称           | 说明              | 回调参数 | 版本 |
+| -------------- | ---------------------------------------- | ----------------- | ------ |
+| onClean | 	清空选择所触发的回调      | 	Function()             |        |
+
+</div>
+
+
+
+## WeekTime 时间段选择器
+
+将时间以半小时为单位，分割成 48 个时间片，用于需要时间管理的人。
+
+### 何时使用
+
+需要选择多个时间段的时候使用。
+
+### 代码演示
+
+**导入组件**
+
+```jsx
+import { WeekTime } from '@openeagle/antd-vue';
+import weekTimeData, {
+  splicing,
+} from '@openeagle/antd-vue/es/components/WeekTime/weektimeData';
+```
+
+<Canvas>
+  <Story id="组件-weektime--basic" />
+</Canvas>
+
+
+####  后台请求数据
+
+<Canvas>
+  <Story id="组件-weektime--advanced" />
+</Canvas>
+
+
+
+### weekTimeData 数据
+
+weekTimeData 是初始化和格式化数据一个重要对象，我们可以通过它来初始化对应的状态，在提交数据时也可以借助它来格式化我们想要的数据格式。
+
+
+<Canvas>
+  <Story id="组件-weektime--week-time-data-base" />
+</Canvas>

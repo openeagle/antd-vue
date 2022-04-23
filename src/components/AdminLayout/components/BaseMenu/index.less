@@ -1,0 +1,23 @@
+@import '../../style/variables.less';
+
+@admin-layout-menu-prefix-cls: ~'@{admin-layout-prefix}-menu';
+
+.@{admin-layout-menu-prefix-cls} {
+  &.ant-menu-horizontal:not(.ant-menu-dark) {
+    & > .ant-menu-item {
+      margin: 0 20px;
+      margin-top: -1px;
+      margin-bottom: 0;
+      padding: 0;
+    }
+    & > .ant-menu-submenu {
+      margin: 0 20px;
+      margin-top: -1px;
+      margin-bottom: 0;
+      padding: 0;
+      & > .ant-menu-submenu-title {
+        padding: 0;
+      }
+    }
+  }
+}

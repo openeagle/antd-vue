@@ -1,0 +1,1 @@
+import '../../ImageUploader/style/index';

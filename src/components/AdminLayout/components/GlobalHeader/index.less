@@ -1,0 +1,25 @@
+@import '../../style/variables.less';
+
+@admin-layout-global-header-prefix-cls: ~'@{admin-layout-prefix}-global-header';
+@admin-layout-global-tabs-wrapper-prefix-cls: ~'@{admin-layout-prefix}-global-header-tabs-content';
+
+.@{admin-layout-global-header-prefix-cls} {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  background: @component-background;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
+  > * {
+    height: 100%;
+  }
+
+  &-left {
+    flex: 1;
+  }
+  &-right {
+    flex-shrink: 0;
+  }
+}

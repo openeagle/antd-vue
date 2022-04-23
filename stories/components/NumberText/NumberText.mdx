@@ -1,0 +1,71 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+## NumberText 数字组件
+
+用于处理数字，整数、小数、金额、进度
+
+
+
+<Story id="组件-numbertext--api" />
+
+### API
+
+#### 属性
+
+<div className="mdTable">
+
+| 参数        | 说明                            | 类型                                                         | 可选值 | 默认值                                                   |
+| :---------- | ------------------------------- | ------------------------------------------------------------ | ------ | -------------------------------------------------------- |
+| placeholder | 默认显示字符，没传或为NaN时显示 | String                                                       |        | --                                                       |
+| value       | 显示的值                        | Number \| String                                             |        |                                                          |
+| type        | 类型                            | integer decimal money percent                                |        | money                                                    |
+| symbol      | 前缀                            | String                                                       |        |                                                          |
+| format      | 格式化字符                      | string \| {  pos: string;     neg: string;     zero: string;   } |        | {   pos : "%s %v",   neg : "%s (%v)",   zero: "%s  --" } |
+| decimal     | 小数点分隔符                    | String                                                       |        | .                                                        |
+| thousand    | 千位分隔符                      | String                                                       |        | ,                                                        |
+| precision   | 小数位精度                      | Number                                                       |        | integer: 0,  decimal: 2, money: 2, percent: 0            |
+
+</div>
+
+
+## 代码演示
+
+**导入组件**
+
+```jsx
+import { NumberText } from '@openeagle/antd-vue';
+```
+
+#### 整数
+<Canvas>
+  <Story id="组件-numbertext--integer" />
+</Canvas>
+
+#### 小数
+<Canvas>
+  <Story id="组件-numbertext--decimal" />
+</Canvas>
+
+#### 金额
+<Canvas>
+  <Story id="组件-numbertext--money" />
+</Canvas>
+
+#### 进度
+<Canvas>
+  <Story id="组件-numbertext--percent" />
+</Canvas>
+

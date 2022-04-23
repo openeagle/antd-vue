@@ -1,0 +1,130 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+## Tinymce 富文本编辑器
+
+TinyMCE是一个功能强大且灵活的富文本编辑器，可以嵌入到任意Web应用中使用。
+
+
+
+### 说明
+
+本组件是基于 `tinymce-vue` 组件的二次封装。
+
+> tinymce-vue: https://github.com/tinymce/tinymce-vue
+
+**导入组件**
+
+```jsx
+import { Tinymce } from '@openeagle/antd-vue';
+```
+
+<Story id="组件-tinymce--api" />
+
+### API
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数           | 说明       | 类型   | 可选值 | 默认值 |
+|----------------|------------|--------|--------|--------|
+| value(v-model) | 输入框内容 | string |        |        |
+|  init | init 是 一 个 对象， 里面 的  键值 对 是 对 Tinymce 的 配置,  具体 内容 见过 下面 的 说明 | object |        |        |
+
+</div>
+
+
+ #### init 对象
+
+ 下面只说明比较常用和自己封装的属性，其它具体配置可以前往 https://www.tiny.cloud/docs/ 进行学习查看。
+
+<div className="mdTable">
+
+| 参数           | 说明       | 类型   | 可选值 | 默认值 |
+|----------------|------------|--------|--------|--------|
+| height          | 高度      | number |        |        |
+| openeagle_image_options          | 自定义上传图片的配置，具体内容见过下面说明      | object |        |        |
+| openeagle_video_options          | 自定义上传视频的配置，具体内容见过下面说明      | object |        |        |
+
+</div>
+
+#### openeagle_video_options 对象
+
+<div className="mdTable">
+
+| 参数           | 说明       | 类型   | 可选值 | 默认值 |
+|----------------|------------|--------|--------|--------|
+| accept         | 上传视频类型类型    | string |        |     .mp4  |
+| limit          | 上传视频的最大个数  | number |        |     15   |
+| maxSize        | 上传视频的大小的最大值      | number |        |        |
+
+</div>
+
+
+
+#### openeagle_image_options 对象
+
+<div className="mdTable">
+
+| 参数           | 说明       | 类型   | 可选值 | 默认值 |
+|----------------|------------|--------|--------|--------|
+| accept         | 上传图片类型    | string |        |     .jpg,.jpeg,.png,.gif   |
+| limit          | 上传图片的最大个数  | number |        |     15   |
+| maxSize        | 上传图片的大小的最大值      | number |        |        |
+
+</div>
+
+#### 事件
+
+
+<div className="mdTable">
+
+| 事件名称           | 说明              | 回调参数 | 版本 |
+| -------------- | ---------------------------------------- | ----------------- | ------ |
+| change | 	变化时回调函数      | 	Function(checkedValue)             |        |
+
+</div>
+
+
+### 代码演示
+
+
+
+#### 基础用法 
+
+<Canvas>
+  <Story id="组件-tinymce--basic" />
+</Canvas>
+
+
+#### openeagle_image_options
+
+使用 `openeagle_image_options` 控制富文本上传图片限制，目前只支持 `accept`，`limit`, 'maxSize'，用法如下
+
+
+<Canvas>
+  <Story id="组件-tinymce--image-options" />
+</Canvas>
+
+
+#### openeagle_video_options
+
+使用 `openeagle_image_options` 控制富文本上传视频限制，目前只支持 `accept`，`limit`, 'maxSize'，用法如下
+
+<Canvas>
+  <Story id="组件-tinymce--video-options" />
+</Canvas>

@@ -1,0 +1,122 @@
+@import '../../../styles/themes/index.less';
+
+@count-down-text-color: @text-color;
+@count-down-font-size: @font-size-base;
+@count-down-line-height: @line-height-base;
+
+.@{openeagle-antd-prefix}-address-tree-select {
+  .c-select-item {
+    background-color: #fff;
+    border: solid 1px #dee4f5;
+    .c-header {
+      padding: 0 12px;
+      height: 34px;
+      color: #333;
+      border-bottom: solid 1px #dee4f5;
+      background-color: #fafbfe;
+      .c-header-title,
+      .c-header-clear {
+        height: 34px;
+        line-height: 34px;
+        vertical-align: middle;
+      }
+      .c-header-clear {
+        color: #598fe6;
+        float: right;
+        cursor: pointer;
+      }
+    }
+    .c-selecter-content {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      height: 246px;
+      width: 100%;
+      padding-bottom: 8px;
+    }
+  }
+
+  .c-cataract {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 8;
+    cursor: pointer;
+  }
+  .c-check-all {
+    width: 100%;
+    height: 36px;
+    position: relative;
+    z-index: 9;
+    &:hover {
+      .c-check-item {
+        background-color: #f8f8f8;
+      }
+    }
+    .c-item-select {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .c-check-item {
+    margin: 0;
+    padding: 0 12px !important;
+    display: block;
+    position: relative;
+    height: 36px !important;
+    line-height: 36px !important;
+    &:hover {
+      background-color: #f8f8f8;
+    }
+    &.active {
+      color: #598fe6;
+      background-color: #f8f8f8;
+      .c-check-arrow {
+        color: #598fe6 !important;
+      }
+    }
+    .c-check-arrow {
+      float: right;
+      margin-top: 10px;
+      color: #c1c1c1;
+      font-size: 14px;
+    }
+    .c-item-checkbox {
+      width: 36px;
+      height: 36px;
+    }
+    .ivu-checkbox-wrapper {
+      /deep/ .ivu-checkbox {
+        margin-right: 4px;
+      }
+    }
+  }
+  .c-select-box {
+    /deep/ .ivu-checkbox-indeterminate {
+      .ivu-checkbox-inner {
+        background-color: #6fb3fb;
+        border-color: #6fb3fb;
+      }
+    }
+  }
+
+  .c-pop-tip {
+    width: 100%;
+  }
+  .c-tag-item {
+    margin: 8px 8px 0;
+    padding: 2px 6px;
+    display: block;
+    height: 28px;
+    /deep/ .anticon-close {
+      float: right;
+      line-height: 25px;
+    }
+  }
+  .c-item-empty {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,121 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+<style>{`
+.mdTable table th{
+  min-width: 120px
+}
+.mdTable table th:nth-child(1) {
+	width: 150px;
+}
+.mdTable table th:nth-child(2) {
+	width: 370px;
+}
+
+`}</style>
+
+## VideoUploader 上传
+
+视频文件上传
+
+
+
+## 代码演示
+
+**导入组件**
+
+```jsx
+import { VideoUploader } from '@openeagle/antd-vue';
+```
+
+
+<Story id="组件-videouploader--api" />
+
+### API
+
+#### 属性
+
+
+<div className="mdTable">
+
+| 参数         | 说明                   | 类型                                             | 可选值 | 默认值   |
+| :----------- | ---------------------- | ------------------------------------------------ | ------ | -------- |
+| value        | 支持v-model            | Array as PropType<[VideoFile](#videofile对象)[]> |        | []       |
+| accept       | 支持的视频格式         | String                                           | .mp4   | .mp4     |
+| errorReserve | 是否保留上传失败的文件 | Boolean                                          |        | true     |
+| directory    | 支持按文件夹上传       | Boolean                                          |        | false    |
+| limit        | 限制上传数量           | Number                                           |        | 1        |
+| multiple     | 支持同时上传多个视频   | Boolean                                          |        | false    |
+| maxSize      | 最大视频大小           | Number                                           |        |          |
+| minSize      | 最小视频大小           | Number                                           |        |          |
+| maxWidth     | 最大视频宽度           | Number                                           |        |          |
+| minWidth     | 最小视频宽度           | Number                                           |        |          |
+| maxHeight    | 最大视频高度           | Number                                           |        |          |
+| minHeight    | 最小视频高度           | Number                                           |        |          |
+| resolution   | 视频分辨率             | {   width: Number;   height: Number; }           |        |          |
+| text         | 上传按钮文案           | String                                           |        | 上传视频 |
+| validate     | 自定义校验             | Function(file)=>{}                               |        |          |
+| disabled     | 是否禁用               | Boolean                                          |        | false    |
+
+</div>
+
+
+#### 事件
+
+
+<div className="mdTable">
+
+| 事件名称           | 说明              | 回调参数 |
+| -------------- | ---------------------------------------- | ----------------- |
+| onChange | 上传进度条改变回调 | Function(files: [VideoFile](#videofile对象)[], file: [VideoFile](#videofile对象)) |
+
+</div>
+
+
+#### VideoFile对象
+```
+VideoFile {
+  uid: string;
+  id: string;
+  name: string;
+  size: number;
+  type: string;
+  status: 'uploading' | 'done' | 'error' | 'removed';
+  thumbUrl: string;
+  url: string;
+  width: number;
+  height: number;
+  duration: number;
+  bitrate: number;
+}
+```
+
+
+#### 同时多个上传
+
+使用 `multiple` 属性，可以支持同时上传多个视频。
+
+<Canvas>
+  <Story id="组件-videouploader--multiple"/>
+</Canvas>
+
+ 
+
+
+#### 限制上传数量
+
+使用 `limit` 属性可以控制视频上传的数量，当上传视频数到达限制后，上传按钮消失。
+
+<Canvas>
+  <Story id="组件-videouploader--limit-count"/>
+</Canvas>
+
+
+#### 限制分辨率
+
+使用 `resolutions` 属性来限制视频上传的分辨率，该属性是一个对象数组，每个对象表示单个上传视频的分辨率，每个对象包含 `width` 和 `height` 分别表示视频的宽和高。事例如下：
+
+
+<Canvas>
+  <Story id="组件-videouploader--specs-limit"/>
+</Canvas>
+

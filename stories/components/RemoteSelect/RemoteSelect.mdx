@@ -1,0 +1,142 @@
+import { Story, Canvas } from '@storybook/addon-docs/blocks';
+
+
+## RemoteSelect
+
+下拉选择器。
+
+
+### 引入
+
+
+```jsx
+import { RemoteSelect } from '@openeagle/antd-vue';
+```
+
+<Story id="组件-numbertext--api" />
+
+
+### API
+
+> 本组件是对 antd vue 中的 Select 选择器的二次封装，所以支持 Select 所提供的所有属性，可以参见官网：https://2x.antdv.com/components/select-cn#API
+> 下面只对自定义或者示例中用到的一些属性进行说明。
+
+
+
+#### 属性
+
+
+<div className="mdTable">
+
+>
+
+| 参数           | 说明                     | 类型              | 可选值 | 默认值 |
+| -------------- | ---------------------------------------- | ----------------- | ------ | ------ |
+| value(v-model) | 	指定当前选中的条目       | string|string[]|number|number[]  |        |     |
+| dataSource     | 必填，远程数据源            | Function as PropType<(keyword: string) => Promise<any[]>>  |        |      |
+| labelInValue | 是否把每个选项的 label 包装到 value 中，会把 Select 的 value 类型从 `string` 变为 `{key: string, label: vNodes}` 的格式       | boolean  |        |     |
+| cacheable | 	是否启用缓存       |  Boolean    |        |   false  |
+| allowClear | 	支持清除       |  Boolean    |        |   false  |
+| defaultActiveFirstOption | 	是否默认高亮第一个选项       |  Boolean    |        |   true  |
+| dropdownMatchSelectWidth | 	下拉菜单和选择器同宽       |  Boolean    |        |   true  |
+| optionFilterProp | 	搜索时过滤对应的 `option` 属性，不支持 `children`       |  string    |        |   value  |
+| optionLabelProp | 回填到选择框的 Option 的属性值，默认是 Option 的子元素。比如在子元素需要高亮效果时，此值可以设为 value。      |  string    |        |   children （combobox 模式下为 value）  |
+
+
+
+</div>
+
+
+
+
+#### 事件
+
+可以参见官网：https://2x.antdv.com/components/select-cn#API
+
+
+### 代码演示
+
+
+#### 默认
+
+基本使用。
+
+<Canvas>
+  <Story id="组件-remoteselect--basic" />
+</Canvas>
+
+
+#### labelInValue
+
+默认情况下 `onChange` 里只能拿到 value，如果需要拿到选中的节点文本 label，可以使用 `labelInValue` 属性。 选中项的 label 会被包装到 value 中传递给 `onChange` 等函数，此时 value 是一个对象。
+
+<Canvas>
+  <Story id="组件-remoteselect--label-in-value" />
+</Canvas>
+
+#### fail
+
+加载失败的情况
+
+<Canvas>
+  <Story id="组件-remoteselect--fail" />
+</Canvas>
+
+#### cacheable
+
+是否启用缓存，开启后 `dataSource`取已缓存的数据。
+
+<Canvas>
+  <Story id="组件-remoteselect--cacheable" />
+</Canvas>
+
+#### allowClear
+
+为 `RemoteSelect` 设置 `allowClear` 属性，则可将选择器清空。
+
+<Canvas>
+  <Story id="组件-remoteselect--allow-clear" />
+</Canvas>
+
+#### defaultActiveFirstOption
+
+为 `RemoteSelect` 设置 `defaultActiveFirstOption` 属性，默认高亮第一个选项。
+
+<Canvas>
+  <Story id="组件-remoteselect--default-active-first-option" />
+</Canvas>
+
+#### dropdownMatchSelectWidth
+
+为 `RemoteSelect` 设置 `dropdownMatchSelectWidth` 属性，则下拉菜单和选择器同宽。
+
+
+<Canvas>
+  <Story id="组件-remoteselect--dropdown-match-select-width" />
+</Canvas>
+
+#### optionFilterProp
+
+为 `RemoteSelect` 设置 `optionFilterProp` 属性，指定搜索时过滤对应的 `option` 属性，不支持 `children`。
+
+<Canvas>
+  <Story id="组件-remoteselect--option-filter-prop" />
+</Canvas>
+
+#### optionLabelProp
+
+为 `RemoteSelect` 设置 `optionLabelProp` 属性，回填到选择框的 Option 的属性值，默认是 Option 的子元素。比如在子元素需要高亮效果时，此值可以设为 `value`。
+
+
+<Canvas>
+  <Story id="组件-remoteselect--option-label-prop" />
+</Canvas>
+
+#### asyncLabelProp
+
+异步请求。
+
+<Canvas>
+  <Story id="组件-remoteselect--async-label-prop" />
+</Canvas>
+
