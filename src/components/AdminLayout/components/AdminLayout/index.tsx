@@ -60,7 +60,7 @@ const AdminLayout = defineComponent({
       type: Boolean,
       default: false,
     },
-    breadcrumbRender: Function as PropType<
+    breadcrumbRender: (Function as unknown) as PropType<
       LayoutContextProps['breadcrumbRender']
     >,
     // 自定义头右部的 render 方法
