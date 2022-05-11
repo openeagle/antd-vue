@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/openeagle/antd-vue/compare/v1.1.0...v1.1.1) (2022-05-11)
+
+
+### Bug Fixes
+
+* 修正文档 ([0a6cccc](https://github.com/openeagle/antd-vue/commit/0a6cccc6557567743ee44f83e5968a991ee4a730))
+
 ## [1.0.1](https://github.com/openeagle/antd-vue/compare/v1.0.0...v1.0.1) (2022-05-06)
 
 
