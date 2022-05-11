@@ -1,7 +1,8 @@
 import { PropType, defineComponent, computed, VNode } from 'vue';
 import { Card, Space, Table } from 'ant-design-vue';
-import { defaultTableProps } from 'ant-design-vue/es/table/Table';
-import { TransformCellTextProps } from 'ant-design-vue/es/table/interface';
+import type { TableProps } from 'ant-design-vue';
+import { tableProps,TablePaginationConfig } from 'ant-design-vue/es/table/Table';
+import { TransformCellTextProps, Key } from 'ant-design-vue/es/table/interface';
 import {
   SearchTableColumn,
   SearchTableInstance,
@@ -13,6 +14,10 @@ import {
 import NumberText from '../../../NumberText';
 import { useSearchContext } from '../../SearchContext';
 import useTable from '../../utils/useTable';
+
+// 兼容 v3
+const defaultTableProps = tableProps()
+
 const SearchTable = defineComponent({
   name: 'OpeneagleAdminSearchTable',
   inheritAttrs: false,
@@ -195,7 +200,7 @@ const SearchTable = defineComponent({
         };
       });
     });
-    const scroll = computed(() => {
+    const scroll = computed<TableProps['scroll']>(() => {
       if (props.tableLayout === 'auto') {
         return undefined;
       }
@@ -217,7 +222,6 @@ const SearchTable = defineComponent({
       }
       return false;
     });
-
     const handleChange = (
       pagination: {
         current: number;
@@ -227,11 +231,11 @@ const SearchTable = defineComponent({
         [key: string]: any;
       },
       sorter: {
-        column: SearchTableColumn;
-        columnKey: string;
-        field: string;
-        order: 'ascend' | 'descend' | false;
-      },
+        column?: SearchTableColumn;
+        columnKey?: string;
+        field?: any,
+        order?: 'ascend' | 'descend' | false;
+      }
     ) => {
       const {
         table: { state },
@@ -343,7 +347,7 @@ const SearchTable = defineComponent({
             {...tableProps}
             sortDirections={sortDirections.value}
             class={[baseClass, attrs.class]}
-            columns={columns.value}
+            columns={columns.value as any}
             dataSource={table.state.data}
             loading={table.state.loading}
             pagination={pagination.value}
@@ -358,7 +362,7 @@ const SearchTable = defineComponent({
             }
             scroll={scroll.value}
             tableLayout={scroll.value?.x ? 'fixed' : tableProps.tableLayout}
-            onChange={handleChange}
+            onChange={handleChange as any}
           />
         </>
       );

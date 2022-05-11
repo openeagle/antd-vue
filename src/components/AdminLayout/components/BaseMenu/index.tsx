@@ -141,7 +141,7 @@ export default defineComponent({
           theme={navTheme}
           openKeys={openMenus}
           selectedKeys={selectedMenus}
-          onOpenChange={onOpenMenusChange}
+          openChange={onOpenMenusChange}
           onSelectChange={onSelectedMenusChange}
         >
           {menuUtils.getNavMenuItems(context.routes, false)}

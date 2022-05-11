@@ -8,14 +8,14 @@ import {
   computed,
 } from 'vue';
 import { Button, Result, Select, Spin } from 'ant-design-vue';
-import { SelectProps } from 'ant-design-vue/es/select/index';
+import { selectProps } from 'ant-design-vue/es/select/index';
 import debounce from 'lodash/debounce';
 
 /**
  * 字段映射
  */
 export interface FieldNames {
-  label: string | ((item: any) => VNode); // 选项显示值
+  label: any; // 选项显示值
   title?: string | ((item: any) => string); // 标题显示值
   value: string; // 选项值
   disabled?: string | ((item: any) => boolean); // 是否禁用
@@ -26,7 +26,7 @@ export interface FieldNames {
  */
 export interface SelectOption {
   key: string;
-  label: string | VNode;
+  label: string | any;
   title?: string;
   value: string | number;
   disabled?: boolean;
@@ -66,7 +66,7 @@ function transformData(fieldNames: FieldNames, data: any[]): SelectOption[] {
 export default defineComponent({
   name: 'OpeneagleSearchSelect',
   props: {
-    ...SelectProps(),
+    ...selectProps(),
     /**
      * 是否允许空值查询
      */

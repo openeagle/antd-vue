@@ -8,13 +8,13 @@ import {
   watch,
 } from 'vue';
 import { Button, Result, Select, Spin } from 'ant-design-vue';
-import { SelectProps } from 'ant-design-vue/es/select/index';
+import { selectProps } from 'ant-design-vue/es/select/index';
 
 /**
  * 字段映射
  */
 export interface FieldNames {
-  label: string | ((item: any) => VNode); // 选项显示值
+  label: any; // 选项显示值
   title?: string | ((item: any) => string); // 标题显示值
   value: string; // 选项值
   disabled?: string | ((item: any) => boolean); // 是否禁用
@@ -65,7 +65,7 @@ const caches = new Map<any, Promise<any[]>>();
 export default defineComponent({
   name: 'OpeneagleRemoteSelect',
   props: {
-    ...SelectProps(),
+    ...selectProps(),
     /**
      * 是否启用缓存
      */
@@ -169,7 +169,8 @@ export default defineComponent({
 
     const handleChange = (...args: any) => {
       emit('update:value', args[0]);
-      props.onChange?.(...args);
+      // props.onChange?.(...(tupeArgs as const));
+      props.onChange?.(args[0], args[1]);
     };
 
     const handleDropdownVisibleChange = (visible: boolean) => {
