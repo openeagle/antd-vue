@@ -113,8 +113,3 @@ $ yarn run storybook
 
   1. 联系项目负责人，将版本分支 feature/x.x.x 合并到 master
   2. 执行发布命令 `npm run release`
-
-### 工具
-
-markdown table generate
-https://www.tablesgenerator.com/markdown_tables
