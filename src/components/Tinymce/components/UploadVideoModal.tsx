@@ -1,7 +1,6 @@
 import { defineComponent, ref, unref } from 'vue';
 import { Modal } from 'ant-design-vue';
 import VideoUploader, { VideoFile } from '../../VideoUploader';
-import { Item } from 'ant-design-vue/lib/vc-menu';
 import { message } from 'ant-design-vue';
 export default defineComponent({
   props: {

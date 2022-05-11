@@ -37,7 +37,7 @@
     ]
   },
   "peerDependencies": {
-    "ant-design-vue": "^2.0.0"
+    "ant-design-vue": "^3.2.3"
   },
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
@@ -48,7 +48,7 @@
     "core-js": "^3.0.0",
     "lodash-es": "^4.17.21",
     "moment": "^2.29.1",
-    "vue": "~3.0.0"
+    "vue": "^3.2.33"
   },
   "devDependencies": {
     "@babel/cli": "^7.13.10",
@@ -76,7 +76,7 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^7.0.0",
     "@whitespace/storybook-addon-html": "^5.0.0",
-    "ant-design-vue": "~2.1.6",
+    "ant-design-vue": "^3.2.3",
     "autodll-webpack-plugin": "^0.4.2",
     "babel-loader": "^8.2.2",
     "babel-plugin-dynamic-import-node": "^2.3.3",

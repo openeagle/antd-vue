@@ -37,7 +37,7 @@ export default defineComponent({
       lastTabKey = currentTabKey;
     });
 
-    const handleTabChange = (key: string) => {
+    const handleTabChange = (key: string | number) => {
       const matchedTab: any = state.tabs.find((item) => item.key === key);
       if (matchedTab) {
         router.push({

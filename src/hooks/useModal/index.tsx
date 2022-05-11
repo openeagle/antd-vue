@@ -1,11 +1,10 @@
 import { Modal, Button } from 'ant-design-vue';
-import { onUnmounted, computed, ref, defineComponent, VNodeTypes, PropType } from 'vue';
+import { onUnmounted, computed, ref, defineComponent, PropType } from 'vue';
 import { ModalFuncProps } from 'ant-design-vue/es/modal/Modal';
 import './index.less';
-
-type btnType = 'default' | 'primary' | 'ghost' | 'dashed' | 'danger' | 'link';
+type btnType = 'link' | 'default' | 'primary' | 'ghost' | 'dashed' | 'text' | 'danger';
 type btnObjType = {
-  btnText: VNodeTypes;
+  btnText: any;
   btnType?: btnType;
   onClick?: () => any;
   props?: any;
