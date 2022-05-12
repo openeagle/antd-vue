@@ -42,8 +42,9 @@
   "dependencies": {
     "@ant-design/icons-vue": "^6.0.1",
     "@babel/runtime": "^7.1.1",
-    "@tinymce/tinymce-vue": "^4.0.3",
     "@openeagle/eaxios": "^1.0.0",
+    "@storybook/addon-docs": "^6.4.22",
+    "@tinymce/tinymce-vue": "^4.0.3",
     "accounting": "^0.4.1",
     "core-js": "^3.0.0",
     "lodash-es": "^4.17.21",
