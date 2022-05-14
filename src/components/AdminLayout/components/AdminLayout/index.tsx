@@ -1,11 +1,12 @@
 import { PropType, defineComponent, reactive, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { Layout } from 'ant-design-vue';
+import { Layout, message } from 'ant-design-vue';
 import {
   CustomRender,
   LayoutContextProps,
   RouteRecordMenu,
   Settings,
+  TopTabs
 } from '../../typings';
 import defaultSettings from '../../defaultSettings';
 import LayoutContext from '../../Context';
@@ -18,6 +19,7 @@ import PageLoading from '../PageLoading';
 import RightContent from '../RightContent';
 import SiderMenu from '../SiderMenu';
 import TopNavHeader from '../TopNavHeader';
+import TopTabsHeader from '../TopTabsHeader';
 
 export interface AdminLayoutState {
   collapsed: boolean;
@@ -50,7 +52,10 @@ const AdminLayout = defineComponent({
       type: Array as PropType<RouteRecordMenu[]>,
       required: true,
     },
-
+    topTabs: {
+      type: Array as PropType<TopTabs[]>,
+      default: () => []
+    },
     // 控制菜单的收起和展开
     collapsed: {
       type: Boolean,
@@ -69,6 +74,8 @@ const AdminLayout = defineComponent({
     footerRender: AdminLayoutRenderType,
     // 菜单的折叠收起事件
     onCollapse: Function as PropType<(collapsed: boolean) => void>,
+    // 头部路由点击事件
+    onTopTabsClick: Function as PropType<(tabs: TopTabs) => void>,
   },
   setup(props, { attrs, slots }) {
     const route = useRoute();
@@ -93,6 +100,9 @@ const AdminLayout = defineComponent({
       state.openMenus = [];
       props.onCollapse?.(collapsed);
     };
+    const onTopTabsClick = (tabs: TopTabs) => {
+      props.onTopTabsClick?.(tabs);
+    };
     const onHasFooterToolbarChange = (hasFooterToolbar: boolean) => {
       state.hasFooterToolbar = hasFooterToolbar;
     };
@@ -108,6 +118,7 @@ const AdminLayout = defineComponent({
         tabs: [],
       },
       onCollapsedChange,
+      onTopTabsClick,
       onSelectedMenusChange,
       onOpenMenusChange,
       onHasFooterToolbarChange,
@@ -121,6 +132,7 @@ const AdminLayout = defineComponent({
           logo: props.logo,
           collapsed: state.collapsed,
           routes: props.routes,
+          topTabs: props.topTabs,
           selectedMenus: state.selectedMenus,
           openMenus: state.openMenus,
           hasFooter: !!props.footerRender,
@@ -195,6 +207,31 @@ const AdminLayout = defineComponent({
             {footerDom}
           </Layout>
         );
+      } else if (props.settings.layout === 'both') {
+        const hasTopTabs = Array.isArray(props.topTabs) && props.topTabs.length > 0
+        if (!hasTopTabs) {
+          message.error('layout 为 both 模式时，需要配置 topTabs 值')
+        }
+        layout = (
+          <Layout {...restAttrs} class={[baseClassName, attrClass]}>
+            <SiderMenu>...</SiderMenu>
+            <Layout>
+              { hasTopTabs && <TopTabsHeader /> }
+              <Layout.Content
+                class={[
+                  `${baseClassName}-content`,
+                  {
+                    [`${baseClassName}-has-header`]: true,
+                    [`${baseClassName}-content-disable-margin`]: false,
+                  },
+                ]}
+              >
+                {children}
+              </Layout.Content>
+            </Layout>
+            {footerDom}
+          </Layout>
+        )
       }
       return (
         <LayoutContext value={context as LayoutContextProps}>

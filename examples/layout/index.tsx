@@ -1,9 +1,9 @@
-import { VNode, defineComponent, reactive, provide } from 'vue';
+import { VNode, defineComponent, reactive, provide, ref } from 'vue';
 import { RouterView } from 'vue-router';
-import { GlobalOutlined } from '@ant-design/icons-vue';
+import { GlobalOutlined, DatabaseFilled, CopyrightCircleFilled } from '@ant-design/icons-vue';
 import { AdminLayout } from '@/index';
-import { LayoutContextProps, Settings } from '@/components/AdminLayout';
-import { routes } from '../router';
+import { LayoutContextProps, Settings, TopTabs } from '@/components/AdminLayout';
+import { routes, routes2 } from '../router';
 
 export default defineComponent({
   name: 'App',
@@ -17,7 +17,21 @@ export default defineComponent({
       navTheme: 'dark',
       contentWidth: 'Fluid',
       routerTabs: true,
+      topTabsIcon: true,
+      iconScriptUrl: '//at.alicdn.com/t/font_2193705_45vwi7jvpg7.js'
     });
+    const currentRoutes = ref(routes)
+    const topTabs = [{
+      icon: <DatabaseFilled />,
+      key: "data",
+      text: "数据",
+    }, {
+      icon: <CopyrightCircleFilled />,
+      key: "tuiguang",
+      text: "推广",
+    }
+
+    ]
     provide('settings', settings);
     const rightContentRender = (context: LayoutContextProps) => {
       return (
@@ -36,11 +50,20 @@ export default defineComponent({
         </AdminLayout.RightContent>
       ) as VNode;
     };
+    const onTopTabsClick = (tab: TopTabs) => {
+      if (tab.key === 'tuiguang') {
+        currentRoutes.value = routes2
+      } else {
+        currentRoutes.value = routes
+      }
+    }
     return () => {
       return (
         <AdminLayout
           settings={settings}
-          routes={routes}
+          topTabs={topTabs}
+          routes={currentRoutes.value}
+          onTopTabsClick={onTopTabsClick}
           rightContentRender={rightContentRender}
         >
           <RouterView />

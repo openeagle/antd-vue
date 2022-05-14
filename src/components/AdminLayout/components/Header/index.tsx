@@ -22,7 +22,7 @@ export default defineComponent({
       } = context;
       const baseClassName = `${context.prefixCls}-header`;
       const needFixedHeader = fixedHeader || layout === 'mix';
-      const needSettingWidth = needFixedHeader && layout === 'side';
+      const needSettingWidth = needFixedHeader && (layout === 'side' || layout === 'both');
       const width = needSettingWidth
         ? `calc(100% - ${collapsed ? 48 : siderWidth}px)`
         : '100%';

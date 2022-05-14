@@ -11,6 +11,8 @@ const defaultSettings: Settings = {
   headerHeight: 48,
   siderWidth: 208,
   routerTabs: false,
+  topTabsIcon: false,
+  iconScriptUrl: ''
 };
 
 export default defaultSettings;

@@ -49,9 +49,9 @@ export type Settings = {
    */
   title?: string | false;
   /**
-   * 布局模式
+   * 布局模式 both 下右菜单模式
    */
-  layout?: 'side' | 'top' | 'mix';
+  layout?: 'side' | 'top' | 'mix' | 'both';
   /**
    * 切割菜单，只在 mix 模式下生效
    */
@@ -91,6 +91,14 @@ export type Settings = {
    * 是否启用路由标签页
    */
   routerTabs?: Boolean;
+  /**
+ * 顶部路由是否显示图标
+ */
+  topTabsIcon: boolean,
+  /**
+   * iconfont 线上地址
+   */
+  iconScriptUrl: string
 };
 
 export type CustomRender = (props: LayoutContextProps) => VNode;
@@ -110,6 +118,14 @@ export interface RouterTabs {
    */
   tabs: RouterTabItem[];
 }
+/**
+ * 顶部路由配置
+ */
+export interface TopTabs {
+  icon?: string | VNode; // 菜单项图标
+  key: string
+  text: string
+}
 
 /**
  * 布局上下文
@@ -128,6 +144,7 @@ export type LayoutContextProps = {
   openMenus: string[];
   hasFooter: boolean;
   hasFooterToolbar: boolean;
+  topTabs?: TopTabs[],
   breadcrumbRender?: (
     routes: RouteRecordMenu[],
   ) => {
@@ -136,6 +153,7 @@ export type LayoutContextProps = {
   }[];
   rightContentRender?: CustomRender | boolean;
   onCollapsedChange: (collapsed: boolean) => void;
+  onTopTabsClick: (tabs: TopTabs) => void;
   onHasFooterToolbarChange?: (hasFooterToolbar: boolean) => void;
   onSelectedMenusChange: (key: string[]) => void;
   onOpenMenusChange: (key: string[]) => void;

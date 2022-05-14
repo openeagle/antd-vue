@@ -1,4 +1,4 @@
-import { defineComponent, inject } from 'vue';
+import { defineComponent, inject, toRaw } from 'vue';
 import { Card, Form, Radio, Switch } from 'ant-design-vue';
 import { AdminLayout, useTabRouter } from '@/index';
 import { Settings } from '@/components/AdminLayout';
@@ -6,6 +6,7 @@ import { Settings } from '@/components/AdminLayout';
 export default defineComponent({
   setup() {
     const settings = inject('settings') as Settings;
+    console.log('settings', toRaw(settings))
     const tabRouter = useTabRouter();
     return () => {
       return (
@@ -28,6 +29,7 @@ export default defineComponent({
                 >
                   <Radio.Button value="side">side</Radio.Button>
                   <Radio.Button value="top">top</Radio.Button>
+                  <Radio.Button value="both">both</Radio.Button>
                 </Radio.Group>
               </Form.Item>
               <Form.Item label="fixedHeader" name="fixedHeader">

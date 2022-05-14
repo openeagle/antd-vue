@@ -10,3 +10,4 @@ import '../components/RightContent/style';
 import '../components/SiderMenu/style';
 import '../components/TopNavHeader/style';
 import '../components/AdminLayout/style';
+import '../components/TopTabsHeader/style';
