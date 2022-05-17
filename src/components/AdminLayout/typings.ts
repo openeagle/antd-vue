@@ -103,6 +103,8 @@ export type Settings = {
 
 export type CustomRender = (props: LayoutContextProps) => VNode;
 
+export type CustomTabItemRender = (props: LayoutContextProps, item: TopTabs) => VNode
+
 export interface RouterTabItem {
   key: string;
   route: RouteLocationNormalized;
@@ -152,6 +154,7 @@ export type LayoutContextProps = {
     breadcrumbName: string;
   }[];
   rightContentRender?: CustomRender | boolean;
+  tapItemContentRender?: CustomTabItemRender | boolean;
   onCollapsedChange: (collapsed: boolean) => void;
   onTopTabsClick: (tabs: TopTabs) => void;
   onHasFooterToolbarChange?: (hasFooterToolbar: boolean) => void;

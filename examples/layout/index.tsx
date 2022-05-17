@@ -52,6 +52,10 @@ export default defineComponent({
         </AdminLayout.RightContent>
       ) as VNode;
     };
+
+    const tapItemContentRender = (context: LayoutContextProps, topTab: TopTabs) => {
+      return <div>{ topTab.text }</div>
+    }
     const onTopTabsClick = (tab: TopTabs) => {
       if (tab.key === 'tuiguang') {
         const routerArr = [{
@@ -94,6 +98,7 @@ export default defineComponent({
           topTabs={topTabs}
           routes={currentRoutes.value}
           onTopTabsClick={onTopTabsClick}
+          tapItemContentRender={tapItemContentRender}
           rightContentRender={rightContentRender}
         >
           <RouterView />

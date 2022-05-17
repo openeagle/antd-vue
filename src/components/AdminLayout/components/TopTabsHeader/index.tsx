@@ -55,10 +55,11 @@ class TabsUtils {
     </div>
   }
   renderTabItem(item: TopTabs) {
+    const { tapItemContentRender } = this.props
     return <Tabs.TabPane key={item.key}>
       {{
         tab: () => {
-          return this.renderTabContent(item)
+          return typeof tapItemContentRender === 'function' ? tapItemContentRender(this.props, item) : this.renderTabContent(item)
         }
       }}
     </Tabs.TabPane>

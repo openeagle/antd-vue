@@ -3,6 +3,7 @@ import { useRoute } from 'vue-router';
 import { Layout, message } from 'ant-design-vue';
 import {
   CustomRender,
+  CustomTabItemRender,
   LayoutContextProps,
   RouteRecordMenu,
   Settings,
@@ -70,6 +71,11 @@ const AdminLayout = defineComponent({
     >,
     // 自定义头右部的 render 方法
     rightContentRender: AdminLayoutRenderType,
+    // 自定义顶部 tabItem 内容
+    tapItemContentRender: {
+      type: [Function, Boolean] as PropType<CustomTabItemRender | boolean>,
+      default: false,
+    },
     // 自定义页脚
     footerRender: AdminLayoutRenderType,
     // 菜单的折叠收起事件
@@ -138,6 +144,11 @@ const AdminLayout = defineComponent({
           hasFooter: !!props.footerRender,
           hasFooterToolbar: state.hasFooterToolbar,
           breadcrumbRender: props.breadcrumbRender,
+          tapItemContentRender: getCustomRender(
+            props,
+            slots,
+            'tapItemContentRender',
+          ),
           rightContentRender: getCustomRender(
             props,
             slots,
@@ -216,7 +227,7 @@ const AdminLayout = defineComponent({
           <Layout {...restAttrs} class={[baseClassName, attrClass]}>
             <SiderMenu>...</SiderMenu>
             <Layout>
-              { hasTopTabs && <TopTabsHeader /> }
+              {hasTopTabs && <TopTabsHeader />}
               <Layout.Content
                 class={[
                   `${baseClassName}-content`,
