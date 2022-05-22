@@ -89,14 +89,15 @@ const AdminLayout = defineComponent({
     const route = useRoute();
     const matchedPath = route.matched.map((item) => item.path);
     const activeTabsKey = props.settings.layout === 'both' ? matchedPath[0].replace('/', '') || props.topTabs[0].key : ''
+    const openMenus = props.settings.layout === 'both' ? matchedPath.slice(1) : props.settings.layout === 'side' ? matchedPath.slice(0) : []
     const state = reactive<AdminLayoutState>({
       collapsed:
         typeof props.collapsed === 'boolean'
           ? props.collapsed
           : props.defaultCollapsed,
-      selectedMenus: matchedPath.slice(0),
+      selectedMenus: props.settings.layout === 'both' ? matchedPath.slice(1) : matchedPath.slice(0),
       activeTabsKey,
-      openMenus: props.settings.layout === 'side' ? matchedPath.slice(0) : [],
+      openMenus,
       hasFooterToolbar: false,
     });
     watch(
@@ -145,6 +146,7 @@ const AdminLayout = defineComponent({
           topTabs: props.topTabs,
           selectedMenus: state.selectedMenus,
           openMenus: state.openMenus,
+          activeTabsKey: state.activeTabsKey,
           hasFooter: !!props.footerRender,
           hasFooterToolbar: state.hasFooterToolbar,
           breadcrumbRender: props.breadcrumbRender,
