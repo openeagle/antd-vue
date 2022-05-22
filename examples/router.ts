@@ -18,6 +18,8 @@ export const routes: RouteRecordMenu[] = [
         component: () => import('./components/AdminLayout'),
         meta: {
           title: 'AdminLayout',
+
+          
         },
       },
       {
@@ -237,62 +239,37 @@ export const routes: RouteRecordMenu[] = [
   },
 ];
 
-export const routes2: RouteRecordMenu[] = [
-  {
-    name: 'router-test',
-    path: '/router-test',
-    component: RouterView,
-    redirect: '/router-test/test-1',
-    meta: {
-      title: 'test',
-    },
-    children: [
-      {
-        name: 'router-test-1',
-        path: '/router-test/test-1',
-        component: () => import('./components/RouterTest1'),
-        meta: {
-          title: 'test-1',
-        },
-      },
-      {
-        name: 'router-test-2',
-        path: '/router-test/test-2',
-        component: () => import('./components/RouterTest2'),
-        meta: {
-          title: 'test-2',
-        },
-      },
-    ],
+export const routes2: RouteRecordMenu = {
+  path: '/tuiguang',
+  name: 'tuiguang',
+  redirect: '/router-test/test-1',
+  component: () => import('./layout'),
+  meta: {
+    title: '推广',
   },
-  // {
-  //   name: 'components',
-  //   path: '/test1',
-  //   component: RouterView,
-  //   redirect: '/components/test-1',
-  //   meta: {
-  //     title: 'test2',
-  //   },
-  //   children: [
-  //     {
-  //       name: 'router-test-3',
-  //       path: '/components/test-3',
-  //       component: () => import('./components/RouterTest3'),
-  //       meta: {
-  //         title: 'AdminLayout',
-  //       },
-  //     },
-  //     {
-  //       name: 'router-test-4',
-  //       path: '/components/test-4',
-  //       component: () => import('./components/RouterTest4'),
-  //       meta: {
-  //         title: 'AdminLayout',
-  //       },
-  //     },
-  //   ],
-  // }
-];
+  children: [{
+    name: 'test-1',
+    path: '/router-test/test-1',
+    component: RouterView,
+    redirect: '/router-test/test-1-1',
+    meta: {
+      title: 'test-1',
+    },
+    children: [{
+      path: '/router-test/test-1-1',
+      component: () => import('./components/RouterTest1'),
+      meta: {
+        title: 'test-1-1',
+      },
+    }, {
+      path: '/router-test/test-1-2',
+      component: () => import('./components/RouterTest2'),
+      meta: {
+        title: 'test-1-2',
+      },
+    }]
+  }]
+}
 
 const router = createRouter({
   history: createWebHistory('/'),
