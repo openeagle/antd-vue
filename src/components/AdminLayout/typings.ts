@@ -143,6 +143,8 @@ export type LayoutContextProps = {
    */
   routerTabs: RouterTabs;
   selectedMenus: string[];
+  // 顶部 tabs 激活 key
+  activeTabsKey?: string;
   openMenus: string[];
   hasFooter: boolean;
   hasFooterToolbar: boolean;

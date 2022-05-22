@@ -25,6 +25,8 @@ import TopTabsHeader from '../TopTabsHeader';
 export interface AdminLayoutState {
   collapsed: boolean;
   selectedMenus: string[];
+  // 顶部 tabs 激活 key
+  activeTabsKey?: string;
   openMenus: string[];
   hasFooterToolbar: boolean;
 }
@@ -86,12 +88,14 @@ const AdminLayout = defineComponent({
   setup(props, { attrs, slots }) {
     const route = useRoute();
     const matchedPath = route.matched.map((item) => item.path);
+    const activeTabsKey = props.settings.layout === 'both' ? matchedPath[0].replace('/', '') || props.topTabs[0].key : ''
     const state = reactive<AdminLayoutState>({
       collapsed:
         typeof props.collapsed === 'boolean'
           ? props.collapsed
           : props.defaultCollapsed,
       selectedMenus: matchedPath.slice(0),
+      activeTabsKey,
       openMenus: props.settings.layout === 'side' ? matchedPath.slice(0) : [],
       hasFooterToolbar: false,
     });
@@ -164,10 +168,20 @@ const AdminLayout = defineComponent({
       () => route.path,
       () => {
         const matchedPath = route.matched.map((item) => item.path);
-        state.selectedMenus = matchedPath.slice(0);
-        if (props.settings.layout === 'side' && !state.collapsed) {
-          state.openMenus = matchedPath.slice(0);
+        if (props.settings.layout === 'both') {
+          const activeTabsKey = matchedPath[0].replace('/', '') || props.topTabs[0].key
+          state.selectedMenus = matchedPath.slice(1);
+          state.activeTabsKey = activeTabsKey
+          if (!state.collapsed) {
+            state.openMenus = matchedPath.slice(1);
+          }
+        } else {
+          state.selectedMenus = matchedPath.slice(0);
+          if (props.settings.layout === 'side' && !state.collapsed) {
+            state.openMenus = matchedPath.slice(0);
+          }
         }
+
       },
     );
     return () => {

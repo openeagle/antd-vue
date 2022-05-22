@@ -1,8 +1,8 @@
 import { VNode, defineComponent, reactive, provide, ref } from 'vue';
-import { RouterView, useRouter } from 'vue-router';
+import { RouteRecordRaw, RouterView, useRouter } from 'vue-router';
 import { GlobalOutlined, DatabaseFilled, CopyrightCircleFilled } from '@ant-design/icons-vue';
 import { AdminLayout } from '@/index';
-import { LayoutContextProps, Settings, TopTabs } from '@/components/AdminLayout';
+import { LayoutContextProps, RouteRecordMenu, Settings, TopTabs } from '@/components/AdminLayout';
 import { routes, routes2 } from '../router';
 
 export default defineComponent({
@@ -58,31 +58,8 @@ export default defineComponent({
     }
     const onTopTabsClick = (tab: TopTabs) => {
       if (tab.key === 'tuiguang') {
-        const routerArr = [{
-          path: '/router-test/test-1',
-          name: 'router-test-1',
-          component: 'RouterTest1',
-          meta: {
-            icon: ''
-          }
-        }, {
-          path: '/router-test/test-2',
-          name: 'router-test-2',
-          component: 'RouterTest2',
-          meta: {
-            icon: ''
-          }
-        }]
-        currentRoutes.value = routes2
-        routerArr.forEach((navigation) => {
-          router.addRoute('openeagle', {
-            path: navigation.path,
-            meta: navigation.meta,
-            name: navigation.name,
-            component: () => import(`../components/${navigation.component}`)
-          })
-        })
-        console.log('router.currentRoute.value.fullPath')
+        currentRoutes.value = routes2.children as RouteRecordMenu[]
+        router.addRoute(routes2 as RouteRecordRaw)
         router.replace('/router-test/test-1')
       } else {
         currentRoutes.value = routes
