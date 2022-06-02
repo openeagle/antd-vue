@@ -430,17 +430,11 @@ export default defineComponent({
       selection: true,
     });
 
-    const slots = {
-      headerCell: ({ column }: { column: any }) => {
-        return <div>(自){column.title}</div>
-      }
-    }
     return () => {
       const content = (
         <AdminSearch pure={params.pure}>
           <SearchForm layout="inline" form={form} />
           <SearchTable
-            contextSlots={slots}
             pagination={{
               pageSizeOptions: ['10', '20', '30', '40'],
               showSizeChanger: true,
@@ -498,7 +492,13 @@ export default defineComponent({
                 ) as VNode,
               ],
             }}
-          />
+          >
+            {{
+              headerCell: ({ column }: { column: any }) => {
+                return <div>(自){column.title}</div>
+              }
+            }}
+          </SearchTable>
           <SearchTable
             pagination={{
               pageSizeOptions: ['10', '20', '30', '40'],

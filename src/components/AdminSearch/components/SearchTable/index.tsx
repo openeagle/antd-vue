@@ -53,7 +53,7 @@ const SearchTable = defineComponent({
       default: '--',
     }
   },
-  setup(props, { attrs }) {
+  setup(props, { attrs, slots }) {
     const context = useSearchContext();
     const sortDirections = computed(() => {
       return props.sortDirections.filter((item) => !!item) as (
@@ -307,7 +307,6 @@ const SearchTable = defineComponent({
 
     return () => {
       const { table, toolbar, ...tableProps } = props;
-      console.log('props', props)
       let toolbarContent = null;
       const baseClass = 'openeagle-ant-search-table';
       if (toolbar) {
@@ -340,7 +339,7 @@ const SearchTable = defineComponent({
           </div>
         );
       }
-      
+
       const tableContent = (
         <>
           {toolbarContent}
@@ -354,7 +353,17 @@ const SearchTable = defineComponent({
             loading={table.state.loading}
             pagination={pagination.value}
             rowKey={props.rowKey || 'id'}
-            v-slots={{...props.contextSlots}}
+            v-slots={{
+              emptyText: slots.emptyText,
+              expandIcon: slots.expandIcon,
+              title: slots.title,
+              footer: slots.footer,
+              summary: slots.summary,
+              bodyCell: slots.bodyCell,
+              headerCell: slots.headerCell,
+              customFilterIcon: slots.customFilterIcon,
+              customFilterDropdown: slots.customFilterIcon,
+            }}
             rowSelection={
               table.state.selected
                 ? {
