@@ -142,6 +142,7 @@ export default defineComponent({
       showSex.value = false;
     }, 2500);
 
+
     const table = SearchTable.useTable<TableListItem>({
       name: 'table',
       params,
@@ -428,11 +429,18 @@ export default defineComponent({
       ],
       selection: true,
     });
+
+    const slots = {
+      headerCell: ({ column }: { column: any }) => {
+        return <div>(自){column.title}</div>
+      }
+    }
     return () => {
       const content = (
         <AdminSearch pure={params.pure}>
           <SearchForm layout="inline" form={form} />
           <SearchTable
+            contextSlots={slots}
             pagination={{
               pageSizeOptions: ['10', '20', '30', '40'],
               showSizeChanger: true,

@@ -1,7 +1,7 @@
 import { PropType, defineComponent, computed, VNode } from 'vue';
 import { Card, Space, Table } from 'ant-design-vue';
 import type { TableProps } from 'ant-design-vue';
-import { tableProps,TablePaginationConfig } from 'ant-design-vue/es/table/Table';
+import { tableProps, TablePaginationConfig } from 'ant-design-vue/es/table/Table';
 import { TransformCellTextProps, Key } from 'ant-design-vue/es/table/interface';
 import {
   SearchTableColumn,
@@ -51,7 +51,7 @@ const SearchTable = defineComponent({
     placeholder: {
       type: String,
       default: '--',
-    },
+    }
   },
   setup(props, { attrs }) {
     const context = useSearchContext();
@@ -281,14 +281,14 @@ const SearchTable = defineComponent({
               );
               newSorterOrder =
                 sortColumnDirections[
-                  (lastOrderIndex + 1) % sortColumnDirections.length
+                (lastOrderIndex + 1) % sortColumnDirections.length
                 ];
             }
             tableQuery.sorter = sorter?.columnKey
               ? {
-                  key: sorter.columnKey,
-                  order: newSorterOrder,
-                }
+                key: sorter.columnKey,
+                order: newSorterOrder,
+              }
               : undefined;
           } else {
             tableQuery.sorter = undefined;
@@ -307,6 +307,7 @@ const SearchTable = defineComponent({
 
     return () => {
       const { table, toolbar, ...tableProps } = props;
+      console.log('props', props)
       let toolbarContent = null;
       const baseClass = 'openeagle-ant-search-table';
       if (toolbar) {
@@ -339,6 +340,7 @@ const SearchTable = defineComponent({
           </div>
         );
       }
+      
       const tableContent = (
         <>
           {toolbarContent}
@@ -352,12 +354,13 @@ const SearchTable = defineComponent({
             loading={table.state.loading}
             pagination={pagination.value}
             rowKey={props.rowKey || 'id'}
+            v-slots={{...props.contextSlots}}
             rowSelection={
               table.state.selected
                 ? {
-                    selectedRowKeys: table.state.selected,
-                    onChange: handleSelectChange,
-                  }
+                  selectedRowKeys: table.state.selected,
+                  onChange: handleSelectChange,
+                }
                 : undefined
             }
             scroll={scroll.value}
