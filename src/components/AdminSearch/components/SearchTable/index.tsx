@@ -212,7 +212,7 @@ const SearchTable = defineComponent({
       };
     });
     const pagination = computed(() => {
-      if (props.table.state.pageSize > 0) {
+      if (props.pagination && props.table.state.pageSize > 0) {
         return {
           ...(typeof props.pagination === 'object' ? props.pagination : {}),
           current: props.table.state.current,
