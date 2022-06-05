@@ -441,6 +441,7 @@ export default defineComponent({
             }}
             sortDirections={[false, 'descend', 'ascend']}
             table={table}
+            scroll={{ y: 500 }}
             toolbar={{
               title: '表格标题',
               actions: [

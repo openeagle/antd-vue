@@ -209,6 +209,7 @@ const SearchTable = defineComponent({
           columns.value.reduce((rcc, column) => {
             return rcc + (column?.width || 150);
           }, 0) || true,
+        y: props.scroll?.y ? props.scroll?.y : undefined
       };
     });
     const pagination = computed(() => {
