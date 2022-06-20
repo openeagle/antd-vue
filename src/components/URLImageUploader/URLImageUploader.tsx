@@ -1,5 +1,6 @@
 import { PropType, defineComponent, watch, reactive } from 'vue';
 import ImageUploader, { ImageFile, ImageUploaderProps } from '../ImageUploader';
+import { UploadFileOptions } from '../Uploader';
 
 const { value, onChange, ...imageUploaderProps } = ImageUploaderProps;
 
@@ -14,6 +15,7 @@ export const URLImageUploaderProps = {
     default: false,
   },
   onChange: Function as PropType<(files: string[]) => void>,
+  uploadFile:  Function as PropType<(file: File, options?: UploadFileOptions) => Promise<any>>
 };
 
 const urlsToImages = (urls: string[]) => {
@@ -89,6 +91,7 @@ export default defineComponent({
           value={state.images}
           onChange={handleChange}
           v-slots={slots}
+          uploadFile={props.uploadFile}
         />
       );
     };

@@ -7,7 +7,7 @@ import {
 } from '@vue/runtime-core';
 import { message, Progress, Image as AImage } from 'ant-design-vue';
 import { PlusOutlined, CloseOutlined } from '@ant-design/icons-vue';
-import Uploader from '../Uploader';
+import Uploader, { UploadFileOptions } from '../Uploader';
 import { handleCompany } from '../../utils/common';
 import './style';
 
@@ -185,6 +185,9 @@ export const ImageUploaderProps = {
   renderItem: Function as PropType<
     (vNode: any, img: ImageFile, index: number) => void
   >,
+  uploadFile: Function as PropType<
+    (file: File, options?: UploadFileOptions) => Promise<any>
+  >,
 };
 
 const regUrl = /^(?:(http|https|ftp):\/\/)?((?:[\w-]+\.)+[a-z0-9]+)((?:\/[^/?#]*)+)?(\?[^#]+)?(#.+)?$/i;
@@ -357,7 +360,7 @@ export default defineComponent({
 
     return () => {
       return (
-        <div class={'Openeagle-ant-image-view'}>
+        <div class={'openeagle-ant-image-view'}>
           <AImage.PreviewGroup key={images.value.length}>
             {images.value.map((item: any, i: number) => {
               let percent = (item.percent || 0).toFixed(2);
@@ -404,7 +407,6 @@ export default defineComponent({
           </AImage.PreviewGroup>
 
           <Uploader
-
             accept={props.accept}
             directory={props.directory}
             multiple={props.multiple}
@@ -415,18 +417,22 @@ export default defineComponent({
             beforeUpload={handleBeforeUpload}
             metadata={getImageFileInfo}
             onChange={handleChange}
+            uploadFile={props.uploadFile}
           >
             {images.value.length >= props.limit || uploading.value
               ? null
               : slots.default?.() || (
-                  <div class={"image-box image-box-upload"} style={{
-                    width: handleCompany(props.view.width),
-                    height: handleCompany(props.view.height),
-                  }}>
-                   <div>
-                     <PlusOutlined />
-                     <div class="ant-upload-text">{props.text}</div>
-                   </div>
+                  <div
+                    class={'image-box image-box-upload'}
+                    style={{
+                      width: handleCompany(props.view.width),
+                      height: handleCompany(props.view.height),
+                    }}
+                  >
+                    <div>
+                      <PlusOutlined />
+                      <div class="ant-upload-text">{props.text}</div>
+                    </div>
                   </div>
                 )}
           </Uploader>

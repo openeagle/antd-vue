@@ -14,6 +14,23 @@ export default {
   // },
 };
 
+const uploadFile = (file: File, options: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        fileId: Date.now(),
+        fileName: '',
+        fileType: 'jped',
+        meta: {
+          format: 'jpeg',
+          size: 0,
+        },
+        url: URL.createObjectURL(file),
+      });
+    }, 2000);
+  });
+};
+
 export const API: any = (args: any, { argTypes }: any) => ({
   setup(props: any, { emit }: any) {
     return () => {
@@ -37,6 +54,7 @@ export const Multiple: any = (args: any) => ({
           multiple={true}
           v-model={[files.value, 'value']}
           limit={10}
+          uploadFile={uploadFile}
         />
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>
@@ -65,8 +83,7 @@ export const LimitCount: any = (args: any) => ({
         type: 'video/mp4',
         percent: 100,
         status: 'done',
-        thumbUrl:
-          '/img34.png',
+        thumbUrl: '/img34.png',
         url: '/img34.png',
         duration: 191.488,
         width: 1280,
@@ -76,7 +93,11 @@ export const LimitCount: any = (args: any) => ({
     ]);
     return () => (
       <div>
-        <VideoUploader v-model={[files.value, 'value']} limit={2} />
+        <VideoUploader
+          v-model={[files.value, 'value']}
+          limit={2}
+          uploadFile={uploadFile}
+        />
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>
     );
@@ -104,8 +125,7 @@ export const SpecsLimit: any = (args: any) => ({
         type: 'video/mp4',
         percent: 100,
         status: 'done',
-        thumbUrl:
-          '/img34.png',
+        thumbUrl: '/img34.png',
         url: '/img34.png',
         duration: 191.488,
         width: 1280,
@@ -121,6 +141,7 @@ export const SpecsLimit: any = (args: any) => ({
             { width: 120, height: 120 },
           ]}
           v-model={[files.value, 'value']}
+          uploadFile={uploadFile}
         />
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>

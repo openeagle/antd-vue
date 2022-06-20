@@ -1,29 +1,11 @@
 import { defineComponent, onUnmounted } from '@vue/runtime-core';
 import { Upload } from 'ant-design-vue';
 import eaxios, { CancelTokenSource } from '@openeagle/eaxios';
-import config from '../../config';
 
-/**
- * TODO: 改成外部配置
- */
-function uploadFile(file: File, options: any): Promise<any> {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        fileId: Date.now(),
-        fileName: '',
-        fileType: 'jped',
-        meta: {
-          format: 'jpeg',
-          size: 0,
-        },
-        url: URL.createObjectURL(file),
-      });
-    }, 2000);
-  });
+export interface UploadFileOptions {
+  cancelToken: CancelTokenSource;
+  onUploadProgress: (event: any) => void;
 }
-
-const { SITE_CDN_MAPS } = config;
 
 export const UploaderProps = {
   ...Upload.props,
@@ -32,7 +14,12 @@ export const UploaderProps = {
 
 export default defineComponent({
   name: 'OpeneagleUploader',
-  props: UploaderProps,
+  props: {
+    ...UploaderProps,
+    uploadFile: Function as PropType<
+      (file: File, options?: UploadFileOptions) => Promise<any>
+    >,
+  },
   setup(props, { slots }) {
     let cancelToken: CancelTokenSource | undefined;
     onUnmounted(() => {
@@ -42,18 +29,19 @@ export default defineComponent({
     });
     cancelToken = eaxios.CancelToken.source();
     const handleUpload = (option: any) => {
-      return uploadFile(option.file, {
-        cancelToken: cancelToken?.token,
-        onUploadProgress: (event: any) => {
-          if (event.total > 0) {
-            event.percent = (event.loaded / event.total) * 100;
-          }
-          if (option.onProgress) {
-            option.onProgress(event);
-          }
-        },
-      })
-        .then((data) => {
+      return props
+        .uploadFile(option.file, {
+          cancelToken: cancelToken?.token,
+          onUploadProgress: (event: any) => {
+            if (event.total > 0) {
+              event.percent = (event.loaded / event.total) * 100;
+            }
+            if (option.onProgress) {
+              option.onProgress(event);
+            }
+          },
+        })
+        .then((data: any) => {
           if (typeof props.metadata === 'function') {
             return props
               .metadata(option.file)
@@ -73,12 +61,12 @@ export default defineComponent({
 
           return data;
         })
-        .then((data) => {
+        .then((data: any) => {
           if (option.onSuccess) {
             option.onSuccess(data);
           }
         })
-        .catch((error) => {
+        .catch((error: any) => {
           if (option.onError) {
             option.onError(error);
           }

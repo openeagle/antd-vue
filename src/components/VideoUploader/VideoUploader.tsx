@@ -7,7 +7,7 @@ import {
 } from '@vue/runtime-core';
 import { message } from 'ant-design-vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
-import Uploader from '../Uploader';
+import Uploader, { UploadFileOptions } from '../Uploader';
 
 export interface VideoFile {
   uid: string;
@@ -132,6 +132,7 @@ export const VideoUploaderProps = {
     default: false,
   },
   onChange: Function as PropType<(files: VideoFile[], file: VideoFile) => void>,
+  uploadFile:  Function as PropType<(file: File, options?: UploadFileOptions) => Promise<any>>
 };
 
 const formatFileSize = (size: number) => {
@@ -288,6 +289,7 @@ export default defineComponent({
           disabled={props.disabled}
           metadata={getVideoFileInfo}
           onChange={handleChange}
+          uploadFile={props.uploadFile}
         >
           {videos.value.length >= props.limit || uploading.value
             ? null
