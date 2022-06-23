@@ -11,7 +11,7 @@
 
   - 数值计算：number-precision@1.x
   - 数值格式化：accounting@0.x
-  - 日期格式化：moment@2.x
+  - 日期格式化：dayjs
 
 ## 项目结构
 

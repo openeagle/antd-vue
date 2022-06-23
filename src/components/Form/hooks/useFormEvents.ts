@@ -1,7 +1,7 @@
 import type { ComputedRef, Ref } from 'vue';
 import type { FormProps, FormSchema, FormActionType } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
-
+import dayjs from 'dayjs'
 import { unref, toRaw } from 'vue';
 
 import { isArray, isFunction, isObject, isString } from '../../../utils/is';
@@ -67,7 +67,7 @@ export function useFormEvents({
         // time type
         if (itemIsDateType(key)) {
           if (Array.isArray(value)) {
-            const arr: moment.Moment[] = [];
+            const arr: dayjs.Dayjs[] = [];
             for (const ele of value) {
               arr.push(dateUtil(ele));
             }

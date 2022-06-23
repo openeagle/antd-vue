@@ -1,5 +1,5 @@
 import Mock from 'mockjs';
-import { Moment } from 'moment';
+import { Dayjs } from 'dayjs';
 import { VNode, defineComponent, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { Button, Card, Checkbox, Space } from 'ant-design-vue';
@@ -10,14 +10,14 @@ const { SearchForm, SearchTable } = AdminSearch;
 interface TableSearchState {
   text: string;
   number: number;
-  year: Moment;
-  month: Moment;
-  week: Moment;
-  date: Moment;
-  dateRange: Moment[];
-  dateTime: Moment;
-  dateTimeRange: Moment[];
-  time: Moment;
+  year: Dayjs;
+  month: Dayjs;
+  week: Dayjs;
+  date: Dayjs;
+  dateRange: Dayjs[];
+  dateTime: Dayjs;
+  dateTimeRange: Dayjs[];
+  time: Dayjs;
   select: string;
 }
 

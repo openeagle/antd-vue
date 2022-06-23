@@ -62,16 +62,14 @@ const FIELD_CONTROLS: {
   year: {
     control: DatePicker,
     controlProps: {
-      mode: 'year',
-    },
-    valueChangePropName: 'onPanelChange',
+      picker: 'year',
+    }
   },
   month: {
     control: DatePicker,
     controlProps: {
-      mode: 'month',
-    },
-    valueChangePropName: 'onPanelChange',
+      picker: 'month',
+    }
   },
   week: {
     control: DatePicker.WeekPicker,
