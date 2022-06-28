@@ -368,6 +368,7 @@ const SearchTable = defineComponent({
             rowSelection={
               table.state.selected
                 ? {
+                  ...props.rowSelection,
                   selectedRowKeys: table.state.selected,
                   onChange: handleSelectChange,
                 }
