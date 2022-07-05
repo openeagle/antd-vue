@@ -245,7 +245,7 @@ const SearchTable = defineComponent({
       const sorterChanged =
         state.sorter?.key !== sorter?.columnKey ||
         state.sorter?.order !== sorter?.order;
-      if (state.pageSize !== pagination.pageSize || sorterChanged) {
+      if (state.pageSize !== pagination.pageSize) {
         tableQuery.current = 1;
       } else {
         tableQuery.current = pagination.current;
