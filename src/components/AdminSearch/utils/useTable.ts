@@ -15,7 +15,7 @@ export default function useTable<T = any>(
     form = false,
     params,
     syncSearch = false,
-    syncRouterQuery = true,
+    restoration = true,
     pagination = true,
     request,
     columns,
@@ -162,7 +162,7 @@ export default function useTable<T = any>(
    * 同步表格路由参数
    */
   const syncRoute = () => {
-    if (!syncRouterQuery) return;
+    if (!restoration) return;
     // 只有路由查询参数不同步时才需要更新
     if (route.query[TABLE_ID] !== tableId.value) {
       const query = {

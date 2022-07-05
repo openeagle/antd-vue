@@ -380,7 +380,7 @@ export interface SearchTableOption<T = any> {
   /**
    * 开启表示表格表单位的搜索条件会同步到地址栏上，默读开启。
    */
-  syncRouterQuery?: boolean;
+  restoration?: boolean;
   /**
    * 是否手动请求
    *
