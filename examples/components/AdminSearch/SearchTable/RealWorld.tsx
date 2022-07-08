@@ -160,7 +160,7 @@ export default defineComponent({
             resolve(
               Mock.mock({
                 total: 98,
-                [`data|${(pagination && pagination.pageSize) || 10}`]: [
+                [`data|20`]: [
                   {
                     'id|+1': pagination?.current
                       ? (pagination.current - 1) * pagination.pageSize + 1

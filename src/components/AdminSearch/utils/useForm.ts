@@ -133,6 +133,7 @@ function useForm<T extends object = any>(
   options:
     | {
         name: string;
+        restoration?: boolean; // 开启表示表格表单位的搜索条件会同步到地址栏上，默读开启，需要配合表格的 restoration 一起使用，否则会出错。
         fields: SearchField[];
       }
     | SearchField[],
@@ -142,6 +143,9 @@ function useForm<T extends object = any>(
 
   const name = Array.isArray(options) ? 'search' : options.name;
   const fields = Array.isArray(options) ? options : options.fields;
+  const restoration = Array.isArray(options)
+    ? true
+    : options.restoration ?? true;
 
   /**
    * 表单标识
@@ -305,6 +309,7 @@ function useForm<T extends object = any>(
    * @param extraParams
    */
   const syncRoute = () => {
+    if (!restoration) return;
     const query = {
       ...route.query,
       ...getFieldsQuery(),

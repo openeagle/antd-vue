@@ -151,6 +151,7 @@ export default function useTable<T = any>(
           state.selected = [];
         }
         state.data = data;
+        console.log('   state.data', state.data);
         state.total = total;
       })
       .finally(() => {
