@@ -186,6 +186,7 @@ const SearchTable = defineComponent({
           key: column.key,
           customRender: render,
           sorter: column.sorter,
+          resizable: column.resizable,
           placeholder: column.placeholder,
           sortOrder:
             column.sorter && state.sorter && state.sorter.key === column.key

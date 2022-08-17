@@ -352,6 +352,7 @@ export interface SearchTableColumn<T = any> {
     [key: string]: any;
   };
   sorter?: boolean;
+  resizable?: boolean;
   defaultSortOrder?: 'ascend' | 'descend' | false;
   sortDirections?: SearchTableSortDirection[];
   placeholder?: string;
