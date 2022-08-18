@@ -105,6 +105,32 @@ export default defineComponent({
           ],
         },
       },
+      {
+        type: 'remoteSelect',
+        name: 'remoteSelect',
+        label: 'remoteSelect',
+        initialValue: 'beijing',
+        controlProps: {
+          placeholder: 'please select your zone',
+          mode: 'multiple',
+          dataSource: () => {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve([
+                  {
+                    label: 'Zone one',
+                    value: 'shanghai',
+                  },
+                  {
+                    label: 'Zone two',
+                    value: 'beijing',
+                  },
+                ]);
+              }, 1500);
+            });
+          },
+        },
+      },
     ]);
     return () => {
       return (

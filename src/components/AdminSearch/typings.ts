@@ -252,6 +252,13 @@ interface SelectFieldsProps extends CommonFieldsProps {
     | ((context: SearchFormInstance) => SelectFieldsControlProps);
 }
 
+interface RemoteSelectFieldsProps extends CommonFieldsProps {
+  type: 'remoteSelect';
+  controlProps?:
+    | SelectFieldsControlProps
+    | ((context: SearchFormInstance) => SelectFieldsControlProps);
+}
+
 export interface SearchFieldSerialization {
   parse: (str?: string) => any;
   stringify: (value?: any) => string | undefined;
@@ -266,6 +273,7 @@ export type SearchField =
   | InputNumberFieldsProps
   | DatePickerFieldsProps
   | SelectFieldsProps
+  | RemoteSelectFieldsProps
   | InstanceFieldPros
   | CustomFieldPros;
 

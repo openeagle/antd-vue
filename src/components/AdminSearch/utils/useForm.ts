@@ -119,6 +119,7 @@ const CONTROL_SERIALIZATION: {
   dateTimeRange: COMMON_SERIALIZATION.timeRange,
   time: COMMON_SERIALIZATION.time,
   select: COMMON_SERIALIZATION.string,
+  remoteSelect: COMMON_SERIALIZATION.string,
 };
 
 function getInitialValue(initialValue: SearchField['initialValue']) {
