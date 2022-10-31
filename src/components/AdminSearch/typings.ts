@@ -252,6 +252,13 @@ interface SelectFieldsProps extends CommonFieldsProps {
     | ((context: SearchFormInstance) => SelectFieldsControlProps);
 }
 
+interface RemoteSelectFieldsProps extends CommonFieldsProps {
+  type: 'remoteSelect';
+  controlProps?:
+    | SelectFieldsControlProps
+    | ((context: SearchFormInstance) => SelectFieldsControlProps);
+}
+
 export interface SearchFieldSerialization {
   parse: (str?: string) => any;
   stringify: (value?: any) => string | undefined;
@@ -266,6 +273,7 @@ export type SearchField =
   | InputNumberFieldsProps
   | DatePickerFieldsProps
   | SelectFieldsProps
+  | RemoteSelectFieldsProps
   | InstanceFieldPros
   | CustomFieldPros;
 
@@ -352,6 +360,7 @@ export interface SearchTableColumn<T = any> {
     [key: string]: any;
   };
   sorter?: boolean;
+  resizable?: boolean;
   defaultSortOrder?: 'ascend' | 'descend' | false;
   sortDirections?: SearchTableSortDirection[];
   placeholder?: string;
@@ -377,6 +386,10 @@ export interface SearchTableOption<T = any> {
    * 开启表示 表格的搜索条件实时跟着表格的字段值变化,默认关闭。
    */
   syncSearch?: boolean;
+  /**
+   * 开启表示表格表单位的搜索条件会同步到地址栏上，默读开启。
+   */
+  restoration?: boolean;
   /**
    * 是否手动请求
    *

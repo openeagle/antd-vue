@@ -25,6 +25,23 @@ export default {
   },
 };
 
+const uploadFile = (file: File, options: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        fileId: Date.now(),
+        fileName: '',
+        fileType: 'jped',
+        meta: {
+          format: 'jpeg',
+          size: 0,
+        },
+        url: URL.createObjectURL(file),
+      });
+    }, 2000);
+  });
+};
+
 export const API: any = (args: any, { argTypes }: any) => ({
   setup(props: any, { emit }: any) {
     return () => {
@@ -45,7 +62,10 @@ export const Basic: any = (args: any) => ({
     return () => {
       return (
         <div>
-          <Uploader v-model={[files.value, 'file-list']}>
+          <Uploader
+            v-model={[files.value, 'file-list']}
+            uploadFile={uploadFile}
+          >
             <Button>
               <UploadOutlined />
               点击上传
@@ -68,6 +88,7 @@ export const PicStyle: any = (props: any, { argTypes }: any) => ({
           <Uploader
             v-model={[files.value, 'file-list']}
             list-type={props.listType}
+            uploadFile={uploadFile}
           >
             <Button>
               <UploadOutlined />

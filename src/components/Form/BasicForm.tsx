@@ -3,7 +3,7 @@ import type { CSSProperties, Ref } from 'vue';
 import { Recordable, Nullable } from './typings';
 import type { AdvanceState } from './types/hooks';
 import type { FormActionType, FormProps, FormSchema } from './types/form';
-
+import dayjs from 'dayjs'
 import { Form, Row } from 'ant-design-vue';
 import { dateItemType } from './helper';
 import { dateUtil } from '../../utils/dateUtil';
@@ -69,7 +69,7 @@ export default defineComponent({
           if (!Array.isArray(defaultValue)) {
             schema.defaultValue = dateUtil(defaultValue);
           } else {
-            const def: moment.Moment[] = [];
+            const def: dayjs.Dayjs[] = [];
             defaultValue.forEach((item) => {
               def.push(dateUtil(item));
             });

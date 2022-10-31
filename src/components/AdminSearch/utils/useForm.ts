@@ -1,5 +1,5 @@
 import { UnwrapRef, reactive, ref, onBeforeUnmount, onMounted } from 'vue';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useRoute, useRouter } from 'vue-router';
 import {
   SearchField,
@@ -35,9 +35,9 @@ const COMMON_SERIALIZATION: {
   time: {
     parse(str?: string) {
       const timestamp = Number(str);
-      return Number.isNaN(timestamp) ? undefined : moment(timestamp);
+      return Number.isNaN(timestamp) ? undefined : dayjs(timestamp);
     },
-    stringify(value?: moment.Moment) {
+    stringify(value?: dayjs.Dayjs) {
       return value ? String(value.toDate().getTime()) : undefined;
     },
   },
@@ -52,7 +52,7 @@ const COMMON_SERIALIZATION: {
           const start = Number(value[0]);
           const end = Number(value[1]);
           if (!Number.isNaN(start) && !Number.isNaN(end)) {
-            return [moment(start), moment(end)];
+            return [dayjs(start), dayjs(end)];
           }
         }
         return undefined;
@@ -60,7 +60,7 @@ const COMMON_SERIALIZATION: {
         return undefined;
       }
     },
-    stringify(value?: moment.Moment[]) {
+    stringify(value?: dayjs.Dayjs[]) {
       return value && value[0] && value[1]
         ? encodeURIComponent(
             JSON.stringify([
@@ -135,6 +135,7 @@ function useForm<T extends object = any>(
   options:
     | {
         name: string;
+        restoration?: boolean; // 开启表示表格表单位的搜索条件会同步到地址栏上，默读开启，需要配合表格的 restoration 一起使用，否则会出错。
         fields: SearchField[];
       }
     | SearchField[],
@@ -144,6 +145,9 @@ function useForm<T extends object = any>(
 
   const name = Array.isArray(options) ? 'search' : options.name;
   const fields = Array.isArray(options) ? options : options.fields;
+  const restoration = Array.isArray(options)
+    ? true
+    : options.restoration ?? true;
 
   /**
    * 表单标识
@@ -319,6 +323,7 @@ function useForm<T extends object = any>(
    * @param extraParams
    */
   const syncRoute = () => {
+    if (!restoration) return;
     const query = {
       ...route.query,
       ...getFieldsQuery(),

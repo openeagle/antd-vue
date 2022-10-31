@@ -202,6 +202,7 @@ export default defineComponent({
 
     return () => {
       const { data, error, loading } = state;
+      const { fieldNames, ...restProps } = props
 
       let notFoundContent;
       let placeholder = props.placeholder;
@@ -230,7 +231,7 @@ export default defineComponent({
 
       return (
         <Select
-          {...props}
+          {...restProps}
           filterOption={false}
           labelInValue
           loading={loading}

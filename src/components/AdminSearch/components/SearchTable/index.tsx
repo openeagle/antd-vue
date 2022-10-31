@@ -1,7 +1,7 @@
 import { PropType, defineComponent, computed, VNode } from 'vue';
 import { Card, Space, Table } from 'ant-design-vue';
 import type { TableProps } from 'ant-design-vue';
-import { tableProps,TablePaginationConfig } from 'ant-design-vue/es/table/Table';
+import { tableProps } from 'ant-design-vue/es/table/Table';
 import { TransformCellTextProps, Key } from 'ant-design-vue/es/table/interface';
 import {
   SearchTableColumn,
@@ -51,9 +51,9 @@ const SearchTable = defineComponent({
     placeholder: {
       type: String,
       default: '--',
-    },
+    }
   },
-  setup(props, { attrs }) {
+  setup(props, { attrs, slots }) {
     const context = useSearchContext();
     const sortDirections = computed(() => {
       return props.sortDirections.filter((item) => !!item) as (
@@ -186,6 +186,7 @@ const SearchTable = defineComponent({
           key: column.key,
           customRender: render,
           sorter: column.sorter,
+          resizable: column.resizable,
           placeholder: column.placeholder,
           sortOrder:
             column.sorter && state.sorter && state.sorter.key === column.key
@@ -209,10 +210,11 @@ const SearchTable = defineComponent({
           columns.value.reduce((rcc, column) => {
             return rcc + (column?.width || 150);
           }, 0) || true,
+        y: props.scroll?.y ? props.scroll?.y : undefined
       };
     });
     const pagination = computed(() => {
-      if (props.table.state.pageSize > 0) {
+      if (props.pagination && props.table.state.pageSize > 0) {
         return {
           ...(typeof props.pagination === 'object' ? props.pagination : {}),
           current: props.table.state.current,
@@ -244,7 +246,7 @@ const SearchTable = defineComponent({
       const sorterChanged =
         state.sorter?.key !== sorter?.columnKey ||
         state.sorter?.order !== sorter?.order;
-      if (state.pageSize !== pagination.pageSize || sorterChanged) {
+      if (state.pageSize !== pagination.pageSize || (sorterChanged &&  state.sorter && sorter?.order)) {
         tableQuery.current = 1;
       } else {
         tableQuery.current = pagination.current;
@@ -281,14 +283,14 @@ const SearchTable = defineComponent({
               );
               newSorterOrder =
                 sortColumnDirections[
-                  (lastOrderIndex + 1) % sortColumnDirections.length
+                (lastOrderIndex + 1) % sortColumnDirections.length
                 ];
             }
             tableQuery.sorter = sorter?.columnKey
               ? {
-                  key: sorter.columnKey,
-                  order: newSorterOrder,
-                }
+                key: sorter.columnKey,
+                order: newSorterOrder,
+              }
               : undefined;
           } else {
             tableQuery.sorter = undefined;
@@ -339,6 +341,7 @@ const SearchTable = defineComponent({
           </div>
         );
       }
+
       const tableContent = (
         <>
           {toolbarContent}
@@ -352,12 +355,24 @@ const SearchTable = defineComponent({
             loading={table.state.loading}
             pagination={pagination.value}
             rowKey={props.rowKey || 'id'}
+            v-slots={{
+              emptyText: slots.emptyText,
+              expandIcon: slots.expandIcon,
+              title: slots.title,
+              footer: slots.footer,
+              summary: slots.summary,
+              bodyCell: slots.bodyCell,
+              headerCell: slots.headerCell,
+              customFilterIcon: slots.customFilterIcon,
+              customFilterDropdown: slots.customFilterIcon,
+            }}
             rowSelection={
               table.state.selected
                 ? {
-                    selectedRowKeys: table.state.selected,
-                    onChange: handleSelectChange,
-                  }
+                  ...props.rowSelection,
+                  selectedRowKeys: table.state.selected,
+                  onChange: handleSelectChange,
+                }
                 : undefined
             }
             scroll={scroll.value}

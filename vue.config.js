@@ -29,7 +29,7 @@ module.exports = {
               'core-js',
               'lodash-es',
               'mockjs',
-              'moment',
+              'dayjs',
               'vue',
               './config/dll/babel-runtime.js',
             ],

@@ -28,6 +28,7 @@ import {
   SearchFormAction,
 } from '../../typings';
 import { useSearchContext } from '../../SearchContext';
+import RemoteSelect from '../../../RemoteSelect/RemoteSelect'
 import useForm from '../../utils/useForm';
 
 const FIELD_CONTROLS: {
@@ -62,16 +63,14 @@ const FIELD_CONTROLS: {
   year: {
     control: DatePicker,
     controlProps: {
-      mode: 'year',
+      picker: 'year',
     },
-    valueChangePropName: 'onPanelChange',
   },
   month: {
     control: DatePicker,
     controlProps: {
-      mode: 'month',
+      picker: 'month',
     },
-    valueChangePropName: 'onPanelChange',
   },
   week: {
     control: DatePicker.WeekPicker,
@@ -99,6 +98,14 @@ const FIELD_CONTROLS: {
   },
   select: {
     control: Select,
+    controlProps: {
+      style: {
+        width: '200px',
+      },
+    },
+  },
+  remoteSelect: {
+    control: RemoteSelect,
     controlProps: {
       style: {
         width: '200px',
@@ -362,7 +369,7 @@ const SearchForm = defineComponent({
     });
     const handleSubmit = () => {
       props.form.submit();
-    }; 
+    };
     const handleReset = () => {
       props.form.reset();
     };

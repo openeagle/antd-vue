@@ -17,6 +17,23 @@ export default {
   // },
 };
 
+const uploadFile = (file: File, options: any): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        fileId: Date.now(),
+        fileName: '',
+        fileType: 'jped',
+        meta: {
+          format: 'jpeg',
+          size: 0,
+        },
+        url: URL.createObjectURL(file),
+      });
+    }, 2000);
+  });
+};
+
 export const API: any = (args: any, { argTypes }: any) => ({
   setup(props: any, { emit }: any) {
     return () => {
@@ -40,6 +57,7 @@ export const Multiple: any = (args: any) => ({
           multiple={args.multiple}
           v-model={[files.value, 'value']}
           limit={100}
+          uploadFile={uploadFile}
         ></ImageUploader>
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>
@@ -65,6 +83,7 @@ export const LimitCount: any = (args: any) => ({
         <ImageUploader
           limit={args.limit}
           v-model={[files.value, 'value']}
+          uploadFile={uploadFile}
         ></ImageUploader>
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>
@@ -93,8 +112,7 @@ export const SpecsLimit: any = (args: any) => ({
         type: 'image/jpeg',
         percent: 100,
         status: 'done',
-        url:
-          '/img34.png',
+        url: '/img34.png',
         width: 681,
         height: 251,
       },
@@ -105,6 +123,7 @@ export const SpecsLimit: any = (args: any) => ({
           limit={3}
           resolutions={args.resolutions}
           v-model={[files.value, 'value']}
+          uploadFile={uploadFile}
         ></ImageUploader>
         <div style={{ marginTop: '20px' }}>{JSON.stringify(files.value)}</div>
       </div>
@@ -136,19 +155,19 @@ export const ViewSize: any = (args: any) => ({
         type: 'image/jpeg',
         percent: 100,
         status: 'done',
-        url:
-          '/img34.png',
+        url: '/img34.png',
         width: 681,
         height: 251,
       },
     ]);
-    console.log(args)
+    console.log(args);
     return () => (
       <div>
         <ImageUploader
           limit={3}
           view={args.view}
           v-model={[files.value, 'value']}
+          uploadFile={uploadFile}
         />
       </div>
     );
@@ -181,8 +200,7 @@ export const CustomRender: any = (args: any) => ({
         type: 'image/jpeg',
         percent: 100,
         status: 'done',
-        url:
-          '/img34.png',
+        url: '/img34.png',
         width: 681,
         height: 251,
       },
@@ -208,6 +226,7 @@ export const CustomRender: any = (args: any) => ({
               </div>
             );
           }}
+          uploadFile={uploadFile}
         >
           <div class={'image-box-upload'}>自定义上传</div>
         </ImageUploader>

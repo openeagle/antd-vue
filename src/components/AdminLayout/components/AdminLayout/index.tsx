@@ -1,11 +1,13 @@
 import { PropType, defineComponent, reactive, watch, watchEffect } from 'vue';
 import { useRoute } from 'vue-router';
-import { Layout } from 'ant-design-vue';
+import { Layout, message } from 'ant-design-vue';
 import {
   CustomRender,
+  CustomTabItemRender,
   LayoutContextProps,
   RouteRecordMenu,
   Settings,
+  TopTabs
 } from '../../typings';
 import defaultSettings from '../../defaultSettings';
 import LayoutContext from '../../Context';
@@ -18,10 +20,13 @@ import PageLoading from '../PageLoading';
 import RightContent from '../RightContent';
 import SiderMenu from '../SiderMenu';
 import TopNavHeader from '../TopNavHeader';
+import TopTabsHeader from '../TopTabsHeader';
 
 export interface AdminLayoutState {
   collapsed: boolean;
   selectedMenus: string[];
+  // 顶部 tabs 激活 key
+  activeTabsKey?: string;
   openMenus: string[];
   hasFooterToolbar: boolean;
 }
@@ -50,7 +55,10 @@ const AdminLayout = defineComponent({
       type: Array as PropType<RouteRecordMenu[]>,
       required: true,
     },
-
+    topTabs: {
+      type: Array as PropType<TopTabs[]>,
+      default: () => []
+    },
     // 控制菜单的收起和展开
     collapsed: {
       type: Boolean,
@@ -65,21 +73,31 @@ const AdminLayout = defineComponent({
     >,
     // 自定义头右部的 render 方法
     rightContentRender: AdminLayoutRenderType,
+    // 自定义顶部 tabItem 内容
+    tapItemContentRender: {
+      type: [Function, Boolean] as PropType<CustomTabItemRender | boolean>,
+      default: false,
+    },
     // 自定义页脚
     footerRender: AdminLayoutRenderType,
     // 菜单的折叠收起事件
     onCollapse: Function as PropType<(collapsed: boolean) => void>,
+    // 头部路由点击事件
+    onTopTabsClick: Function as PropType<(tabs: TopTabs) => void>,
   },
   setup(props, { attrs, slots }) {
     const route = useRoute();
     const matchedPath = route.matched.map((item) => item.path);
+    const activeTabsKey = props.settings.layout === 'both' ? matchedPath[0].replace('/', '') || props.topTabs[0].key : ''
+    const openMenus = props.settings.layout === 'both' ? matchedPath.slice(1) : props.settings.layout === 'side' ? matchedPath.slice(0) : []
     const state = reactive<AdminLayoutState>({
       collapsed:
         typeof props.collapsed === 'boolean'
           ? props.collapsed
           : props.defaultCollapsed,
-      selectedMenus: matchedPath.slice(0),
-      openMenus: props.settings.layout === 'side' ? matchedPath.slice(0) : [],
+      selectedMenus: props.settings.layout === 'both' ? matchedPath.slice(1) : matchedPath.slice(0),
+      activeTabsKey,
+      openMenus,
       hasFooterToolbar: false,
     });
     watch(
@@ -92,6 +110,9 @@ const AdminLayout = defineComponent({
       state.collapsed = collapsed;
       state.openMenus = [];
       props.onCollapse?.(collapsed);
+    };
+    const onTopTabsClick = (tabs: TopTabs) => {
+      props.onTopTabsClick?.(tabs);
     };
     const onHasFooterToolbarChange = (hasFooterToolbar: boolean) => {
       state.hasFooterToolbar = hasFooterToolbar;
@@ -108,6 +129,7 @@ const AdminLayout = defineComponent({
         tabs: [],
       },
       onCollapsedChange,
+      onTopTabsClick,
       onSelectedMenusChange,
       onOpenMenusChange,
       onHasFooterToolbarChange,
@@ -121,11 +143,18 @@ const AdminLayout = defineComponent({
           logo: props.logo,
           collapsed: state.collapsed,
           routes: props.routes,
+          topTabs: props.topTabs,
           selectedMenus: state.selectedMenus,
           openMenus: state.openMenus,
+          activeTabsKey: state.activeTabsKey,
           hasFooter: !!props.footerRender,
           hasFooterToolbar: state.hasFooterToolbar,
           breadcrumbRender: props.breadcrumbRender,
+          tapItemContentRender: getCustomRender(
+            props,
+            slots,
+            'tapItemContentRender',
+          ),
           rightContentRender: getCustomRender(
             props,
             slots,
@@ -141,10 +170,20 @@ const AdminLayout = defineComponent({
       () => route.path,
       () => {
         const matchedPath = route.matched.map((item) => item.path);
-        state.selectedMenus = matchedPath.slice(0);
-        if (props.settings.layout === 'side' && !state.collapsed) {
-          state.openMenus = matchedPath.slice(0);
+        if (props.settings.layout === 'both') {
+          const activeTabsKey = matchedPath[0].replace('/', '') || props.topTabs[0].key
+          state.selectedMenus = matchedPath.slice(1);
+          state.activeTabsKey = activeTabsKey
+          if (!state.collapsed) {
+            state.openMenus = matchedPath.slice(1);
+          }
+        } else {
+          state.selectedMenus = matchedPath.slice(0);
+          if (props.settings.layout === 'side' && !state.collapsed) {
+            state.openMenus = matchedPath.slice(0);
+          }
         }
+
       },
     );
     return () => {
@@ -195,6 +234,31 @@ const AdminLayout = defineComponent({
             {footerDom}
           </Layout>
         );
+      } else if (props.settings.layout === 'both') {
+        const hasTopTabs = Array.isArray(props.topTabs) && props.topTabs.length > 0
+        if (!hasTopTabs) {
+          message.error('layout 为 both 模式时，需要配置 topTabs 值')
+        }
+        layout = (
+          <Layout {...restAttrs} class={[baseClassName, attrClass]}>
+            <SiderMenu>...</SiderMenu>
+            <Layout>
+              {hasTopTabs && <TopTabsHeader />}
+              <Layout.Content
+                class={[
+                  `${baseClassName}-content`,
+                  {
+                    [`${baseClassName}-has-header`]: true,
+                    [`${baseClassName}-content-disable-margin`]: false,
+                  },
+                ]}
+              >
+                {children}
+              </Layout.Content>
+            </Layout>
+            {footerDom}
+          </Layout>
+        )
       }
       return (
         <LayoutContext value={context as LayoutContextProps}>

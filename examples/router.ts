@@ -18,6 +18,8 @@ export const routes: RouteRecordMenu[] = [
         component: () => import('./components/AdminLayout'),
         meta: {
           title: 'AdminLayout',
+
+          
         },
       },
       {
@@ -85,14 +87,6 @@ export const routes: RouteRecordMenu[] = [
             ],
           },
         ],
-      },
-      {
-        name: 'components_button',
-        path: '/components/button',
-        component: () => import('./components/Button'),
-        meta: {
-          title: 'Button',
-        },
       },
       {
         name: 'components_loader',
@@ -199,33 +193,6 @@ export const routes: RouteRecordMenu[] = [
         },
       },
       {
-        name: 'components_form',
-        path: '/components/form',
-        meta: {
-          title: 'Form',
-        },
-        component: RouterView,
-        redirect: '/components/form-basic',
-        children: [
-          {
-            name: 'components_form-basic',
-            path: '/components/form-basic',
-            component: () => import('./components/Form/Basic'),
-            meta: {
-              title: '基础表单',
-            },
-          },
-          {
-            name: 'components_use-form',
-            path: '/components/use-form',
-            component: () => import('./components/Form/UseForm'),
-            meta: {
-              title: 'UseForm',
-            },
-          },
-        ],
-      },
-      {
         name: 'components_address-tree-select',
         path: '/components/AddressTreeSelect',
         component: () => import('./components/AddressTreeSelect'),
@@ -272,11 +239,44 @@ export const routes: RouteRecordMenu[] = [
   },
 ];
 
+export const routes2: RouteRecordMenu = {
+  path: '/tuiguang',
+  name: 'tuiguang',
+  redirect: '/router-test/test-1',
+  component: () => import('./layout'),
+  meta: {
+    title: '推广',
+  },
+  children: [{
+    name: 'test-1',
+    path: '/router-test/test-1',
+    component: RouterView,
+    redirect: '/router-test/test-1-1',
+    meta: {
+      title: 'test-1',
+    },
+    children: [{
+      path: '/router-test/test-1-1',
+      component: () => import('./components/RouterTest1'),
+      meta: {
+        title: 'test-1-1',
+      },
+    }, {
+      path: '/router-test/test-1-2',
+      component: () => import('./components/RouterTest2'),
+      meta: {
+        title: 'test-1-2',
+      },
+    }]
+  }]
+}
+
 const router = createRouter({
   history: createWebHistory('/'),
   routes: [
     {
       path: '/',
+      name: 'openeagle',
       redirect: '/components',
       component: () => import('./layout'),
       meta: {

@@ -1,5 +1,5 @@
 import { defineComponent } from 'vue';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { Card } from 'ant-design-vue';
 import { AdminSearch } from '@/index';
 
@@ -27,25 +27,25 @@ export default defineComponent({
         type: 'year',
         name: 'year',
         label: 'year',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
       },
       {
         type: 'month',
         name: 'month',
         label: 'month',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
       },
       {
         type: 'week',
         name: 'week',
         label: 'week',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
       },
       {
         type: 'date',
         name: 'date',
         label: 'date',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
         controlProps: {
           style: {
             width: '100%',
@@ -56,7 +56,7 @@ export default defineComponent({
         type: 'dateRange',
         name: 'dateRange',
         label: 'dateRange',
-        initialValue: () => [moment(), moment()],
+        initialValue: () => [dayjs(), dayjs()],
         controlProps: {
           style: {
             width: '100%',
@@ -67,13 +67,13 @@ export default defineComponent({
         type: 'dateTime',
         name: 'dateTime',
         label: 'dateTime',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
       },
       {
         type: 'dateTimeRange',
         name: 'dateTimeRange',
         label: 'dateTimeRange',
-        initialValue: () => [moment(), moment()],
+        initialValue: () => [dayjs(), dayjs()],
         controlProps: {
           style: {
             width: '100%',
@@ -84,7 +84,7 @@ export default defineComponent({
         type: 'time',
         name: 'time',
         label: 'time',
-        initialValue: () => moment(),
+        initialValue: () => dayjs(),
       },
       {
         type: 'select',
@@ -103,6 +103,32 @@ export default defineComponent({
               value: 'beijing',
             },
           ],
+        },
+      },
+      {
+        type: 'remoteSelect',
+        name: 'remoteSelect',
+        label: 'remoteSelect',
+        initialValue: 'beijing',
+        controlProps: {
+          placeholder: 'please select your zone',
+          mode: 'multiple',
+          dataSource: () => {
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                resolve([
+                  {
+                    label: 'Zone one',
+                    value: 'shanghai',
+                  },
+                  {
+                    label: 'Zone two',
+                    value: 'beijing',
+                  },
+                ]);
+              }, 1500);
+            });
+          },
         },
       },
     ]);

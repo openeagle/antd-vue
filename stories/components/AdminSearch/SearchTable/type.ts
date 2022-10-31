@@ -1,16 +1,16 @@
-import { Moment } from "moment";
+import { Dayjs } from "dayjs";
 
 export   interface TableSearchState {
   text: string;
   number: number;
-  year: Moment;
-  month: Moment;
-  week: Moment;
-  date: Moment;
-  dateRange: Moment[];
-  dateTime: Moment;
-  dateTimeRange: Moment[];
-  time: Moment;
+  year: Dayjs;
+  month: Dayjs;
+  week: Dayjs;
+  date: Dayjs;
+  dateRange: Dayjs[];
+  dateTime: Dayjs;
+  dateTimeRange: Dayjs[];
+  time: Dayjs;
   select: string;
 }
 

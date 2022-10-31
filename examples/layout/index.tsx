@@ -1,13 +1,14 @@
-import { VNode, defineComponent, reactive, provide } from 'vue';
-import { RouterView } from 'vue-router';
-import { GlobalOutlined } from '@ant-design/icons-vue';
+import { VNode, defineComponent, reactive, provide, ref } from 'vue';
+import { RouteRecordRaw, RouterView, useRouter } from 'vue-router';
+import { GlobalOutlined, DatabaseFilled, CopyrightCircleFilled } from '@ant-design/icons-vue';
 import { AdminLayout } from '@/index';
-import { LayoutContextProps, Settings } from '@/components/AdminLayout';
-import { routes } from '../router';
+import { LayoutContextProps, RouteRecordMenu, Settings, TopTabs } from '@/components/AdminLayout';
+import { routes, routes2 } from '../router';
 
 export default defineComponent({
   name: 'App',
   setup(props) {
+    const router = useRouter()
     const settings = reactive<Settings>({
       ...AdminLayout.defaultSettings,
       title: '@openeagle/antd-vue',
@@ -17,8 +18,23 @@ export default defineComponent({
       navTheme: 'dark',
       contentWidth: 'Fluid',
       routerTabs: true,
+      topTabsIcon: true,
+      iconScriptUrl: '//at.alicdn.com/t/font_2193705_45vwi7jvpg7.js'
     });
+    const currentRoutes = ref(routes)
+    const topTabs = [{
+      icon: <DatabaseFilled />,
+      key: "data",
+      text: "数据",
+    }, {
+      icon: <CopyrightCircleFilled />,
+      key: "tuiguang",
+      text: "推广",
+    }
+
+    ]
     provide('settings', settings);
+
     const rightContentRender = (context: LayoutContextProps) => {
       return (
         <AdminLayout.RightContent>
@@ -36,11 +52,30 @@ export default defineComponent({
         </AdminLayout.RightContent>
       ) as VNode;
     };
+
+    const tapItemContentRender = (context: LayoutContextProps, topTab: TopTabs) => {
+      return <div>{ topTab.text }</div>
+    }
+    const onTopTabsClick = (tab: TopTabs) => {
+      if (tab.key === 'tuiguang') {
+        currentRoutes.value = routes2.children as RouteRecordMenu[]
+        router.addRoute(routes2 as RouteRecordRaw)
+        router.replace('/router-test/test-1')
+      } else {
+        currentRoutes.value = routes
+        router.replace('/components')
+      }
+    }
+
+
     return () => {
       return (
         <AdminLayout
           settings={settings}
-          routes={routes}
+          topTabs={topTabs}
+          routes={currentRoutes.value}
+          onTopTabsClick={onTopTabsClick}
+          tapItemContentRender={tapItemContentRender}
           rightContentRender={rightContentRender}
         >
           <RouterView />
