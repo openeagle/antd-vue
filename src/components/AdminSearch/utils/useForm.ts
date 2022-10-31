@@ -119,6 +119,8 @@ const CONTROL_SERIALIZATION: {
   dateTimeRange: COMMON_SERIALIZATION.timeRange,
   time: COMMON_SERIALIZATION.time,
   select: COMMON_SERIALIZATION.string,
+  multipleSelect: COMMON_SERIALIZATION.array,
+  remoteSelect: COMMON_SERIALIZATION.string,
 };
 
 function getInitialValue(initialValue: SearchField['initialValue']) {
@@ -176,7 +178,13 @@ function useForm<T extends object = any>(
             ? COMMON_SERIALIZATION[field.serialization]
             : field.serialization;
       } else if (typeof type === 'string') {
-        serialization = CONTROL_SERIALIZATION[type];
+        const selectField = field as any;
+        const mode = selectField.controlProps?.mode ?? '';
+        if (mode === 'multiple') {
+          serialization = CONTROL_SERIALIZATION['multipleSelect'];
+        } else {
+          serialization = CONTROL_SERIALIZATION[type];
+        }
       }
       if (serialization) {
         const query: string | null = route.query[name] as any;
@@ -288,7 +296,13 @@ function useForm<T extends object = any>(
             ? COMMON_SERIALIZATION[field.serialization]
             : field.serialization;
       } else if (typeof type === 'string') {
-        serialization = CONTROL_SERIALIZATION[type];
+        const selectField = field as any;
+        const mode = selectField.controlProps?.mode ?? '';
+        if (mode === 'multiple') {
+          serialization = CONTROL_SERIALIZATION['multipleSelect'];
+        } else {
+          serialization = CONTROL_SERIALIZATION[type];
+        }
       }
       if (serialization) {
         rcc[name] = serialization.stringify((state as any)[name]);
