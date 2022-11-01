@@ -125,8 +125,10 @@ export default defineComponent({
           type: 'select',
           name: 'select',
           label: 'select',
+          initialValue: () => [],
           controlProps: {
             allowClear: true,
+            mode: 'multiple',
             placeholder: 'please select your zone',
             options: [
               {
@@ -138,6 +140,29 @@ export default defineComponent({
                 value: 'beijing',
               },
             ],
+          },
+        },
+        {
+          type: 'remoteSelect',
+          name: 'remoteSelect',
+          label: 'remoteSelect',
+          initialValue: () => [],
+          controlProps: {
+            allowClear: true,
+            mode: 'multiple',
+            placeholder: 'please select your zone',
+            dataSource: () => {
+              return Promise.resolve([
+                {
+                  label: 'Zone one',
+                  value: 'shanghai',
+                },
+                {
+                  label: 'Zone two',
+                  value: 'beijing',
+                },
+              ]);
+            },
           },
         },
       ],

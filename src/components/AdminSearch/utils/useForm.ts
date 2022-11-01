@@ -182,10 +182,12 @@ function useForm<T extends object = any>(
             ? COMMON_SERIALIZATION[field.serialization]
             : field.serialization;
       } else if (typeof type === 'string') {
-        const selectField = field as any;
-        const mode = selectField.controlProps?.mode ?? '';
-        if (mode === 'multiple') {
-          serialization = CONTROL_SERIALIZATION['multipleSelect'];
+        if (type === 'select' || type === 'remoteSelect') {
+          const selectField = field as any;
+          const mode = selectField.controlProps?.mode ?? '';
+          if (mode === 'multiple') {
+            serialization = CONTROL_SERIALIZATION['multipleSelect'];
+          }
         } else {
           serialization = CONTROL_SERIALIZATION[type];
         }
@@ -300,10 +302,12 @@ function useForm<T extends object = any>(
             ? COMMON_SERIALIZATION[field.serialization]
             : field.serialization;
       } else if (typeof type === 'string') {
-        const selectField = field as any;
-        const mode = selectField.controlProps?.mode ?? '';
-        if (mode === 'multiple') {
-          serialization = CONTROL_SERIALIZATION['multipleSelect'];
+        if (type === 'select' || type === 'remoteSelect') {
+          const selectField = field as any;
+          const mode = selectField.controlProps?.mode ?? '';
+          if (mode === 'multiple') {
+            serialization = CONTROL_SERIALIZATION['multipleSelect'];
+          }
         } else {
           serialization = CONTROL_SERIALIZATION[type];
         }
